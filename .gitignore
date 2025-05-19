@@ -10,3 +10,4 @@ wheels/
 .venv
 .env
 ci.yml
+celerybeat-schedule.db
