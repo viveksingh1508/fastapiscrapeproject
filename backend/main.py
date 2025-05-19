@@ -1,10 +1,28 @@
 from fastapi import FastAPI, Depends
-from backend.db import get_db
+from backend.db import get_db, engine
+from backend.models import Base
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
+from contextlib import asynccontextmanager
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    env = os.getenv("ENV", "dev")
+    if env == "dev":
+        print("Dev mode: Creating tables")
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+    else:
+        print("Prod mode: Expecting Alembic migrations")
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/jobs")
