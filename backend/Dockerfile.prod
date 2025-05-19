@@ -1,0 +1,19 @@
+FROM python:3.11-slim
+
+RUN pip install uv
+
+WORKDIR /backend
+
+# Copy and install dependencies
+COPY pyproject.toml ./
+RUN uv pip compile --output-file requirements.txt pyproject.toml && \
+    uv pip install -r requirements.txt --system
+
+# Copy the source code
+COPY ./backend ./backend
+
+# Expose port
+EXPOSE 8000
+
+# Start the server
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
