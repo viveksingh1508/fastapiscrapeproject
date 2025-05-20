@@ -15,11 +15,13 @@ load_dotenv()
 celery_app = Celery(
     "scraper",
     broker="redis://localhost:6379/0",  # Replace with your Redis URL
-    backend="redis://localhost:6379/0",  # Optional: Specify backend too
+    backend="redis://localhost:6379/0",
+    timezone="UTC",  # Optional: Specify backend too
 )
 
-print(f"broker_url{celery_app.conf.broker_url}")
-print(f"backend{celery_app.conf.result_backend}")
+print(f"broker_url {celery_app.conf.broker_url}")
+print(f"backend {celery_app.conf.result_backend}")
+print(f"timezone {celery_app.conf.timezone}")
 
 celery_app.config_from_object("celeryconfig")
 
@@ -67,7 +69,6 @@ async def _insert_jobs_async():
                 """
                 INSERT INTO users (username, email, password, created_at, updated_at)
                 VALUES ($1, $2, $3, $4, $5)
-                ON CONFLICT (username) DO NOTHING
                 """,
                 job["username"],
                 job["email"],
