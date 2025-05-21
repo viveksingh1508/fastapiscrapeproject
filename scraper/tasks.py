@@ -1,12 +1,8 @@
 from celery import Celery
-import requests
-from bs4 import BeautifulSoup
 import asyncpg
 import os
 import asyncio
-import hashlib
 from datetime import datetime
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -39,20 +35,6 @@ jobs = [
     {"username": "johndoe", "email": "johndoe@example.com", "password": "secret123"},
     # Add more users as needed
 ]
-
-
-# @celery_app.task
-# def scrape():
-#     url = "https://example.com/jobs"
-#     response = requests.get(url)
-#     soup = BeautifulSoup(response.text, "html.parser")
-
-#     jobs = []
-#     for job in soup.find_all("div", class_="job"):
-#         title = job.find("h2").text
-#         description = job.find("p").text
-#         link = job.find("a")["href"]
-#         jobs.append({"title": title, "description": description, "link": link})
 
 
 # Insert into DB
@@ -88,7 +70,3 @@ def process(x, y):
     """
     print(f"Processing {x} and {y}")
     return x + y
-
-
-#     # Call the insert_jobs function to start the scraping process
-#     insert_jobs.delay()
