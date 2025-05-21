@@ -11,6 +11,7 @@ RUN uv pip compile --output-file requirements.txt pyproject.toml && \
 
 # Copy the source code
 COPY ./backend ./backend
+COPY ./shared ./shared
 
 # Expose port
 EXPOSE 8000

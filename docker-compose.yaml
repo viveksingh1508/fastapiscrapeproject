@@ -10,3 +10,22 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/backend/backend
+
+  scraper:
+    build:
+      context: .
+      dockerfile: scraper/Dockerfile
+
+    volumes:
+      - ./scraper:/scraper/scraper
+    command: celery -A tasks worker --loglevel=info
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: scraper/Dockerfile
+    volumes:
+      - ./scraper:/scraper
+      - ./shared:/shared
+
+    command: celery -A tasks beat --loglevel=info

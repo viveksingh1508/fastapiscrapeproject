@@ -1,8 +1,8 @@
 from celery.schedules import crontab
 
-broker_url = "redis://localhost:6379/0"
-result_backend = "redis://localhost:6379/1"
-redbeat_redis_url = "redis://localhost:6379/2"
+broker_url = "redis://host.docker.internal:6379/0"
+result_backend = "redis://host.docker.internal:6379/1"
+redbeat_redis_url = "redis://host.docker.internal:6379/2"
 timezone = "UTC"
 
 # RedBeat settings

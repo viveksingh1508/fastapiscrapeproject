@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
-from backend.db import get_db, engine
-from backend.models import Base
+from shared.db import get_db, engine
+from shared.models import Base
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 from contextlib import asynccontextmanager

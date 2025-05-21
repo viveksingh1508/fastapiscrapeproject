@@ -10,8 +10,8 @@ load_dotenv()
 
 celery_app = Celery(
     "scraper",
-    broker="redis://localhost:6379/0",  # Replace with your Redis URL
-    backend="redis://localhost:6379/0",
+    broker="redis://host.docker.internal:6379/0",  # Replace with your Redis URL
+    backend="redis://host.docker.internal:6379/0",
     timezone="UTC",  # Optional: Specify backend too
 )
 
@@ -44,7 +44,7 @@ def insert_jobs():
 
 
 async def _insert_jobs_async():
-    conn = await asyncpg.connect(DATABASE_URL)
+    conn = await asyncpg.connect(DATABASE_URL, ssl=False)
     for job in jobs:
         try:
             await conn.execute(
