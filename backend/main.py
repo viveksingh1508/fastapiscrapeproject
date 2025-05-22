@@ -1,11 +1,11 @@
 from fastapi import FastAPI, Depends
-from shared.db import get_db, engine
-from shared.models import Base
+from shared.backenddb import get_db, engine
+from shared.models import User, Base
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import text
 from contextlib import asynccontextmanager
 import os
 from dotenv import load_dotenv
+from sqlalchemy.future import select
 
 load_dotenv()
 
@@ -27,8 +27,8 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/jobs")
 async def get_jobs(db: AsyncSession = Depends(get_db)):
-    result = await db.execute(text("SELECT * FROM users"))
-    jobs = result.mappings().all()
+    result = await db.execute(select(User))
+    jobs = result.scalars().all()
     return jobs
 
 

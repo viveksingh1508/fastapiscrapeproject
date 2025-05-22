@@ -6,10 +6,10 @@ import os
 load_dotenv()
 # Ideally store in .env and load with dotenv or pydantic
 # DATABASE_URL = "postgresql+asyncpg://postgres:postgres@localhost:5432/app_db"
-DATABASE_URL = os.getenv("DATABASE_URL")
-print(f"Connecting to database at {DATABASE_URL}")
+BACKEND_DATABASE_URL = os.getenv("BACKEND_DATABASE_URL")
+print(f"Connecting to database at {BACKEND_DATABASE_URL}")
 
-engine = create_async_engine(DATABASE_URL, echo=True)
+engine = create_async_engine(BACKEND_DATABASE_URL, echo=True)
 AsyncSessionLocal = sessionmaker(
     bind=engine, class_=AsyncSession, expire_on_commit=False
 )

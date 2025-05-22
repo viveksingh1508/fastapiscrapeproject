@@ -15,6 +15,9 @@ RUN uv pip compile --output-file requirements.txt pyproject.toml && \
 COPY ./scraper /scraper
 COPY ./shared /shared
 
+ENV PYTHONPATH=/
+ENV PYTHONPATH="${PYTHONPATH}:/"
+
 
 
 CMD ["celery", "-A", "tasks", "worker", "--loglevel=info"]
