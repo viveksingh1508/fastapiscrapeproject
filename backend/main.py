@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Request
 from shared.backenddb import get_db, engine
 from shared.models import User, Base, Job
 from shared.schema import UserCreate, UserResponse
@@ -7,6 +7,10 @@ from contextlib import asynccontextmanager
 import os
 from dotenv import load_dotenv
 from sqlalchemy.future import select
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+
 
 load_dotenv()
 
@@ -24,6 +28,20 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+app.mount(
+    "/static",
+    StaticFiles(directory="backend/static"),
+    name="static",
+)
+templates = Jinja2Templates(directory="backend/templates")
+
+
+@app.get("/", response_class=HTMLResponse)
+async def check(request: Request):
+    return templates.TemplateResponse(
+        "index.html", {"request": request, "message": "Welcome to fullstack"}
+    )
 
 
 @app.get("/jobs")
