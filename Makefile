@@ -10,4 +10,4 @@ down:
 	docker compose down
 
 logs:
-	docker compose logs -f backend
+	docker compose logs -f app

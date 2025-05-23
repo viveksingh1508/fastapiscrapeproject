@@ -1,15 +1,15 @@
 version: "3.9"
 
 services:
-  backend:
+  app:
     build:
       context: .
-      dockerfile: backend/Dockerfile.dev
+      dockerfile: app/Dockerfile.dev
 
     ports:
       - "8000:8000"
     volumes:
-      - ./backend:/backend/backend
+      - ./app:/app/app
 
   scraper:
     build:

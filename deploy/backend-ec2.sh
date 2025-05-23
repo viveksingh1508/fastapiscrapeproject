@@ -8,10 +8,10 @@ sudo usermod -aG docker $USER
 git clone https://github.com/your/repo.git
 cd repo
 
-# Build and run backend
-docker build -t jobairo-backend -f backend/Dockerfile .
+# Build and run application
+docker build -t jobairo-app -f app/Dockerfile .
 docker run -d \
   --env-file .env \
   -p 8000:8000 \
-  --name backend \
-  jobairo-backend
+  --name app \
+  jobairo-app
