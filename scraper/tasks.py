@@ -16,11 +16,19 @@ celery_app.config_from_object("celeryconfig")
 
 jobs = [
     {
+        "first_name": "Vivek",
+        "last_name": "Singh",
         "username": "viveksingh",
         "email": "viveksingh00747@gmail.com",
         "password": "password",
     },
-    {"username": "johndoe", "email": "johndoe@example.com", "password": "secret123"},
+    {
+        "first_name": "John",
+        "last_name": "Doe",
+        "username": "johndoe",
+        "email": "johndoe@example.com",
+        "password": "secret123",
+    },
 ]
 
 

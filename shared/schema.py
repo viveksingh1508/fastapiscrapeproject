@@ -3,6 +3,8 @@ from pydantic import BaseModel
 
 class User(BaseModel):
     id: int
+    first_name: str
+    last_name: str
     username: str
     email: str
     password: str
@@ -10,7 +12,28 @@ class User(BaseModel):
     updated_at: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+class UserResponse(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    username: str
+    email: str
+    created_at: str
+    updated_at: str
+
+    class Config:
+        from_attributes = True
+
+
+class UserCreate(BaseModel):
+    first_name: str
+    last_name: str
+    username: str
+    email: str
+    password: str
 
 
 class Job(BaseModel):
@@ -24,4 +47,4 @@ class Job(BaseModel):
     posted_at: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
