@@ -1,18 +1,5 @@
 from pydantic import BaseModel
-
-
-class User(BaseModel):
-    id: int
-    first_name: str
-    last_name: str
-    username: str
-    email: str
-    password: str
-    created_at: str
-    updated_at: str
-
-    class Config:
-        from_attributes = True
+from datetime import datetime
 
 
 class UserResponse(BaseModel):
@@ -21,8 +8,8 @@ class UserResponse(BaseModel):
     last_name: str
     username: str
     email: str
-    created_at: str
-    updated_at: str
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         from_attributes = True

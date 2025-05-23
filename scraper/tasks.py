@@ -38,6 +38,8 @@ def insert_jobs():
     try:
         for job in jobs:
             user = User(
+                first_name=job["first_name"],
+                last_name=job["last_name"],
                 username=job["username"],
                 email=job["email"],
                 password=job["password"],

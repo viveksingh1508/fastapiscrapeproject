@@ -49,7 +49,7 @@ async def get_user(user_id: int, db: AsyncSession = Depends(get_db)):
     return user
 
 
-@app.post("/users", response_class=UserResponse)
+@app.post("/users", response_model=UserResponse)
 async def create_user(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
     user = User(
         first_name=user_data.first_name,
@@ -64,7 +64,7 @@ async def create_user(user_data: UserCreate, db: AsyncSession = Depends(get_db))
     return user
 
 
-@app.put("/users/{user_id}", response_class=UserResponse)
+@app.put("/users/{user_id}", response_model=UserResponse)
 async def update_user(
     user_id: int, user_data: UserCreate, db: AsyncSession = Depends(get_db)
 ):
