@@ -10,6 +10,7 @@ services:
       - "8000:8000"
     volumes:
       - ./app:/app/app
+      - ./.env:/.env
 
   scraper:
     build:
@@ -18,6 +19,7 @@ services:
 
     volumes:
       - ./scraper:/scraper/scraper
+      - ./.env:/.env
     command: celery -A tasks worker --loglevel=info
 
   celery-beat:
@@ -27,5 +29,6 @@ services:
     volumes:
       - ./scraper:/scraper
       - ./shared:/shared
+      - ./.env:/.env
 
     command: celery -A tasks beat --loglevel=info

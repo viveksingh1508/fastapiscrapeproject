@@ -1,11 +1,12 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
+from pathlib import Path
 import os
 
-load_dotenv()
-# Ideally store in .env and load with dotenv or pydantic
-# DATABASE_URL = "postgresql+asyncpg://postgres:postgres@localhost:5432/app_db"
+env_path = Path("/.env")
+load_dotenv(dotenv_path=env_path)
+
 BACKEND_DATABASE_URL = os.getenv("BACKEND_DATABASE_URL")
 print(f"Connecting to database at {BACKEND_DATABASE_URL}")
 

@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from shared.models import User
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from jose import JWTError, jwt
 from sqlalchemy.future import select
 
 

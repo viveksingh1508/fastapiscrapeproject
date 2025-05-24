@@ -12,3 +12,5 @@ wheels/
 ci.yml
 celerybeat-schedule.db
 dump.rdb
+
+.env
