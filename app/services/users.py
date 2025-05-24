@@ -22,7 +22,7 @@ async def get_user(user_id: int, db: AsyncSession):
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalars().first()
     if not user:
-        return {"error": "User not found"}
+        raise HTTPException(status_code=404, detail="User not found")
     return user
 
 
@@ -65,9 +65,9 @@ async def update_user_password(
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalars().first()
     if not user:
-        return {"error": "User not found"}
+        raise HTTPException(status_code=404, detail="User not found")
     if not verify_password(password_data.old_password, user.password):
-        return {"error": "Old password is incorrect"}
+        raise HTTPException(status_code=400, detail="Old password is incorrect")
     user.password = hash_password(password_data.new_password)
     await db.commit()
     await db.refresh(user)
@@ -78,7 +78,7 @@ async def delete_user(user_id: int, db: AsyncSession):
     result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalars().first()
     if not user:
-        return {"error": "User not found"}
+        raise HTTPException(status_code=404, detail="User not found")
     await db.delete(user)
     await db.commit()
     return {"message": "User deleted"}
