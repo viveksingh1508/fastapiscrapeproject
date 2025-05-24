@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException, Request
 from shared.backenddb import get_db, engine
 from shared.models import User, Base, Job
-from shared.schema import UserCreate, UserResponse
+from app.schema.schema import UserCreate, UserResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from contextlib import asynccontextmanager
 import os

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from app.services import users
 from sqlalchemy.ext.asyncio import AsyncSession
 from shared.backenddb import get_db
-from shared.schema import UserCreate, UserResponse
+from app.schema.schema import UserCreate, UserResponse, PasswordUpdate
 
 
 router = APIRouter()
@@ -28,6 +28,13 @@ async def update_user(
     user_id: int, user_data: UserCreate, db: AsyncSession = Depends(get_db)
 ):
     return await users.update_user(user_id, user_data, db)
+
+
+@router.put("/{user_id}/password")
+async def update_user_password(
+    user_id: int, password_data: PasswordUpdate, db: AsyncSession = Depends(get_db)
+):
+    return await users.update_user_password(user_id, password_data, db)
 
 
 @router.delete("/{user_id}")

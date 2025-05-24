@@ -35,3 +35,8 @@ class Job(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class PasswordUpdate(BaseModel):
+    old_password: str
+    new_password: str
