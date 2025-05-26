@@ -6,6 +6,8 @@ from jose import JWTError, jwt
 from sqlalchemy.future import select
 from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.templating import Jinja2Templates
+from fastapi import Request
 
 import os
 from dotenv import load_dotenv
@@ -19,6 +21,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
 #     return templates.TemplateResponse(
 #         "index.html", {"request": request, "message": "Welcome to fullstack"}
 #     )
+
+templates = Jinja2Templates(directory="app/templates")
 
 
 def create_access_token(data: dict, expires_delta=None):
@@ -54,6 +58,15 @@ async def login(form_data: OAuth2PasswordRequestForm, db: AsyncSession):
 
     access_token = create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+async def login_page(request: Request):
+    return templates.TemplateResponse(
+        "login.html",
+        {
+            "request": request,
+        },
+    )
 
 
 async def logout(user_id: int, db: AsyncSession):
