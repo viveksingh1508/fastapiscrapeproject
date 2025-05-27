@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 
 class JobResponse(BaseModel):
@@ -9,7 +10,7 @@ class JobResponse(BaseModel):
     salary: str
     type: str
     description: str
-    posted_at: str
+    posted_at: datetime
 
     class Config:
         from_attributes = True

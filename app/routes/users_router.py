@@ -3,12 +3,12 @@ from app.services import users
 from sqlalchemy.ext.asyncio import AsyncSession
 from shared.backenddb import get_db
 from app.schema.user_schema import UserCreate, UserResponse, PasswordUpdate
-
+from typing import List
 
 router = APIRouter()
 
 
-@router.get("/", response_model=UserResponse)
+@router.get("/", response_model=List[UserResponse])
 async def list_users(db: AsyncSession = Depends(get_db)):
     return await users.get_users(db)
 

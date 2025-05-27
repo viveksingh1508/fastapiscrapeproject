@@ -20,10 +20,18 @@ async def get_job(job_id: int, db: AsyncSession):
 
 
 async def create_job(job_data: JobCreate, db: AsyncSession):
-    db.add(job_data)
+    job = Job(
+        title=job_data.title,
+        company=job_data.company,
+        location=job_data.location,
+        salary=job_data.salary,
+        type=job_data.type,
+        description=job_data.description,
+    )
+    db.add(job)
     await db.commit()
-    await db.refresh(job_data)
-    return job_data
+    await db.refresh(job)
+    return job
 
 
 async def update_job(job_id: int, job_data: JobUpdate, db: AsyncSession):
