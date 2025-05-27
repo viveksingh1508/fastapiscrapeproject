@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from shared.models import User
-from app.schema.schema import UserCreate, PasswordUpdate
+from app.schema.user_schema import UserCreate, PasswordUpdate
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.helper.utils import hash_password, verify_password

@@ -23,30 +23,6 @@ class UserCreate(BaseModel):
     password: str
 
 
-class Job(BaseModel):
-    id: int
-    title: str
-    company: str
-    location: str
-    salary: str
-    type: str
-    description: str
-    posted_at: str
-
-    class Config:
-        from_attributes = True
-
-
 class PasswordUpdate(BaseModel):
     old_password: str
     new_password: str
-
-
-class UserLogin(BaseModel):
-    username: str
-    password: str
-
-
-class LoginResponse(BaseModel):
-    access_token: str
-    token_type: str

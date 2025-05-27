@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Request
 from app.services import auth
 from sqlalchemy.ext.asyncio import AsyncSession
 from shared.backenddb import get_db
-from app.schema.schema import LoginResponse, UserLogin
+from app.schema.auth_schema import LoginResponse, UserLogin
 from fastapi.responses import HTMLResponse
 
 router = APIRouter()

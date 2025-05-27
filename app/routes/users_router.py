@@ -2,18 +2,18 @@ from fastapi import APIRouter, Depends
 from app.services import users
 from sqlalchemy.ext.asyncio import AsyncSession
 from shared.backenddb import get_db
-from app.schema.schema import UserCreate, UserResponse, PasswordUpdate
+from app.schema.user_schema import UserCreate, UserResponse, PasswordUpdate
 
 
 router = APIRouter()
 
 
-@router.get("/")
+@router.get("/", response_model=UserResponse)
 async def list_users(db: AsyncSession = Depends(get_db)):
     return await users.get_users(db)
 
 
-@router.get("/{user_id}")
+@router.get("/{user_id}", response_model=UserResponse)
 async def retrieve_user(user_id: int, db: AsyncSession = Depends(get_db)):
     return await users.get_user(user_id, db)
 
