@@ -1,7 +1,7 @@
 from celery import Celery
 from datetime import datetime, timezone
 from shared.scraperdb import SessionLocal
-from shared.models import Job, User
+from shared.models import Job
 
 
 celery_app = Celery(
@@ -12,48 +12,6 @@ celery_app = Celery(
 )
 
 celery_app.config_from_object("celeryconfig")
-
-
-# jobs = [
-#     {
-#         "first_name": "Vivek",
-#         "last_name": "Singh",
-#         "username": "viveksingh",
-#         "email": "viveksingh00747@gmail.com",
-#         "password": "password",
-#     },
-#     {
-#         "first_name": "John",
-#         "last_name": "Doe",
-#         "username": "johndoe",
-#         "email": "johndoe@example.com",
-#         "password": "secret123",
-#     },
-# ]
-
-
-# @celery_app.task
-# def insert_jobs():
-#     db = SessionLocal()
-#     try:
-#         for job in jobs:
-#             user = User(
-#                 first_name=job["first_name"],
-#                 last_name=job["last_name"],
-#                 username=job["username"],
-#                 email=job["email"],
-#                 password=job["password"],
-#                 created_at=datetime.utcnow(),
-#                 updated_at=datetime.utcnow(),
-#             )
-#             db.add(user)
-#         db.commit()
-#         print("Users inserted")
-#     except Exception as e:
-#         db.rollback()
-#         print(f"Insert failed: {e}")
-#     finally:
-#         db.close()
 
 
 jobs = [

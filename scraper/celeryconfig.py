@@ -52,21 +52,21 @@ worker_proc_alive_timeout = 30
 beat_max_loop_interval = 5  # More frequent scheduler checks
 
 beat_schedule = {
-    "run-every-one-minute": {
+    "run-every-ten-minute": {
         "task": "tasks.insert_jobs",
-        "schedule": crontab(minute="*/1"),
-        "options": {
-            "expires": 180,  # Increased to 3 minutes
-            "priority": 5,
-            "queue": "scheduled",
-            "retry": True,  # Explicit retry
-            "retry_policy": {
-                "max_retries": 3,
-                "interval_start": 10,
-                "interval_step": 10,
-                "interval_max": 60,
-            },
-        },
+        "schedule": crontab(minute="*/10"),
+        # "options": {
+        #     "expires": 180,  # Increased to 3 minutes
+        #     "priority": 5,
+        #     "queue": "scheduled",
+        #     "retry": True,  # Explicit retry
+        #     "retry_policy": {
+        #         "max_retries": 3,
+        #         "interval_start": 10,
+        #         "interval_step": 10,
+        #         "interval_max": 60,
+        #     },
+        # },
         "args": (),
     }
 }

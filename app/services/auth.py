@@ -46,9 +46,12 @@ def decode_access_token(token: str):
 async def authenticate_user(username: str, password: str, db: AsyncSession):
     result = await db.execute(select(User).where(User.username == username))
     user = result.scalars().first()
-    if not user or not verify_password(password, user.password):
+    try:
+        if not user or not verify_password(password, user.password):
+            return None
+        return user
+    except Exception:
         return None
-    return user
 
 
 async def login(form_data: OAuth2PasswordRequestForm, db: AsyncSession):
