@@ -29,9 +29,15 @@
       <p><strong>Location:</strong> {{ job.location }}</p>
       <p><strong>Salary:</strong> {{ job.salary }}</p>
       <p><strong>Type:</strong> {{ job.type }}</p>
-      <p><strong>Posted:</strong> {{ job.posted_at }}</p>
-      <p>{{ job.description }}</p>
+      <p><strong>Description:</strong>{{ job.description }}</p>
+
+      <p>
+        <strong>Posted on:</strong>
+        <span data-posted-at="{{job.posted_at}}"></span>
+      </p>
     </div>
     <div style="text-align: center"><a href="/jobs">Back to all jobs</a></div>
   </body>
 </html>
+
+<script src="/static/js/script.js"></script>

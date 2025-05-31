@@ -26,18 +26,25 @@
   <body>
     <h1 style="text-align: center">Available Jobs</h1>
     {% for job in jobs %}
-    <div class="job" style="width: 70%; margin: 0 auto">
-      <h2>{{ job.title }}</h2>
-      <p><strong>Company:</strong> {{ job.company }}</p>
-      <p><strong>Location:</strong> {{ job.location }}</p>
-      <p>
-        <strong>Description:</strong> {{ job.description[:100] }}...
-        <a href="/jobs/{{ job.id }}">Read more</a>
-      </p>
-      <p><strong>Posted on:</strong> {{ job.posted_at }}</p>
-    </div>
+    <a href="/jobs/{{job.id}}" style="text-decoration: none; color: inherit">
+      <div class="job" style="width: 70%; margin: 0 auto">
+        <h2>{{ job.title }}</h2>
+        <p><strong>Company:</strong> {{ job.company }}</p>
+        <p><strong>Location:</strong> {{ job.location }}</p>
+        <p>
+          <strong>Description:</strong> {{ job.description[:100] }}...
+          <a href="/jobs/{{ job.id }}">Read more</a>
+        </p>
+        <p>
+          <strong>Posted on:</strong>
+          <span data-posted-at="{{job.posted_at}}"></span>
+        </p></div
+    ></a>
+
     {% else %}
     <p>No jobs available at the moment.</p>
     {% endfor %}
   </body>
 </html>
+
+<script src="/static/js/script.js"></script>
