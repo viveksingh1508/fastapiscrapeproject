@@ -1,22 +1,29 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, Request
 from shared.models import Job
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.schema.job_schema import JobCreate, JobUpdate
+from fastapi.templating import Jinja2Templates
+
+templates = Jinja2Templates(directory="app/templates")
 
 
-async def get_jobs(db: AsyncSession):
+async def get_jobs(request: Request, db: AsyncSession):
     result = await db.execute(select(Job))
     jobs = result.scalars().all()
-    return jobs
+    return templates.TemplateResponse("jobs.html", {"request": request, "jobs": jobs})
 
 
-async def get_job(job_id: int, db: AsyncSession):
+async def get_job(request: Request, job_id: int, db: AsyncSession):
     result = await db.execute(select(Job).where(Job.id == job_id))
     job = result.scalars().first()
     if not job:
-        return HTTPException(status_code=404, detail="Job not found")
-    return job
+        return templates.TemplateResponse(
+            "404.html", {"request": request}, status_code=404
+        )
+    return templates.TemplateResponse(
+        "job_details.html", {"request": request, "job": job}
+    )
 
 
 async def create_job(job_data: JobCreate, db: AsyncSession):

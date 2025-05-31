@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Details</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .job {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+      }
+      .job h3 {
+        margin: 0 0 5px;
+      }
+      .job p {
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center">{{ job.title }} at {{ job.company }}</h1>
+    <div class="job" style="width: 70%; margin: 0 auto">
+      <p><strong>Location:</strong> {{ job.location }}</p>
+      <p><strong>Salary:</strong> {{ job.salary }}</p>
+      <p><strong>Type:</strong> {{ job.type }}</p>
+      <p><strong>Posted:</strong> {{ job.posted_at }}</p>
+      <p>{{ job.description }}</p>
+    </div>
+    <div style="text-align: center"><a href="/jobs">Back to all jobs</a></div>
+  </body>
+</html>

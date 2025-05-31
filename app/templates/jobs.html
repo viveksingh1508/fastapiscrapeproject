@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jobs Listing</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .job {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+      }
+      .job h3 {
+        margin: 0 0 5px;
+      }
+      .job p {
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center">Available Jobs</h1>
+    {% for job in jobs %}
+    <div class="job" style="width: 70%; margin: 0 auto">
+      <h2>{{ job.title }}</h2>
+      <p><strong>Company:</strong> {{ job.company }}</p>
+      <p><strong>Location:</strong> {{ job.location }}</p>
+      <p>
+        <strong>Description:</strong> {{ job.description[:100] }}...
+        <a href="/jobs/{{ job.id }}">Read more</a>
+      </p>
+      <p><strong>Posted on:</strong> {{ job.posted_at }}</p>
+    </div>
+    {% else %}
+    <p>No jobs available at the moment.</p>
+    {% endfor %}
+  </body>
+</html>
