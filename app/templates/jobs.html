@@ -44,6 +44,18 @@
     {% else %}
     <p>No jobs available at the moment.</p>
     {% endfor %}
+    <div style="text-align: center; margin-top: 20px">
+      {% if page > 1 %}
+      <a href="/jobs?page={{ page - 1 }}" style="margin-right: 10px"
+        >&laquo; Previous</a
+      >
+      {% endif %} Page {{ page }} of {{ total_pages }} {% if page < total_pages
+      %}
+      <a href="/jobs?page={{ page + 1 }}" style="margin-left: 10px"
+        >Next &raquo;</a
+      >
+      {% endif %}
+    </div>
   </body>
 </html>
 

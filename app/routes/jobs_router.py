@@ -3,14 +3,16 @@ from app.services import jobs
 from sqlalchemy.ext.asyncio import AsyncSession
 from shared.backenddb import get_db
 from app.schema.job_schema import JobResponse, JobCreate, JobUpdate
-from typing import List
+from fastapi.responses import HTMLResponse
 
 router = APIRouter()
 
 
-@router.get("/", response_model=List[JobResponse])
-async def list_jobs(request: Request, db: AsyncSession = Depends(get_db)):
-    return await jobs.get_jobs(request, db)
+@router.get("/", response_class=HTMLResponse)
+async def list_jobs(
+    request: Request, db: AsyncSession = Depends(get_db), page: int = 1, limit: int = 5
+):
+    return await jobs.get_jobs(request, db, page, limit)
 
 
 @router.get("/{job_id}", response_model=JobResponse)

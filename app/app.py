@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from shared.backenddb import engine
 from shared.models import Base
 from contextlib import asynccontextmanager
@@ -43,3 +43,13 @@ async def health():
 @app.get("/docs")
 async def docs():
     return {"message": "API documentation is available at /docs"}
+
+
+@app.get("/")
+async def root(request: Request):
+    return templates.TemplateResponse(
+        "index.html",
+        {
+            "request": request,
+        },
+    )

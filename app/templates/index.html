@@ -3,11 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My App</title>
-    <link rel="stylesheet" href="/static/css/style.css" />
+    <title>JobAiro - Find Your Next Job</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
   </head>
   <body>
-    <h1>{{message}}</h1>
-    <script src="/static/js/script.js"></script>
+    <header class="main-header">
+      <div class="nav-left">
+        <a href="/" class="btn nav-btn">Home</a>
+      </div>
+
+      <div class="nav-right">
+        <a href="/login" class="btn nav-btn-sign" style="margin-right: 10px"
+          >Sign In</a
+        >
+        <span class="separator">|</span>
+        <a href="/admin" class="btn nav-btn">Admin / Job Posting</a>
+      </div>
+      <hr class="header-separator" />
+      <div class="search-area">
+        <input type="text" placeholder="Search by title or keyword" />
+        <input type="text" placeholder="Location (e.g. New York)" />
+        <button class="btn search-btn">Search</button>
+      </div>
+    </header>
+    <div class="banner-image">
+      <img src="/static/images/banner.webp" alt="Job Search Banner" />
+    </div>
+
+    <!-- <img
+      src="/static/images/banner.webp"
+      alt="JobAiro banner"
+      class="hero-image"
+    /> -->
+
+    <header>
+      <h1>Welcome to JobAiro</h1>
+      <p>Your next job is just a search away!</p>
+      <p>
+        Explore thousands of job listings from top companies and find the
+        perfect match for your skills and career goals.
+      </p>
+      <p>
+        Whether you're looking for a full-time position, part-time work, or
+        freelance opportunities, JobAiro has something for everyone.
+      </p>
+      <p>
+        Start your job search today and take the next step in your career with
+        JobAiro.
+      </p>
+      <div class="header-cta">
+        <p>
+          <a href="/login" class="btn btn-primary">Get Started</a>
+        </p>
+        <p>
+          <a href="/admin" class="btn btn-secondary">Post a Job</a>
+        </p>
+      </div>
+    </header>
+
+    <footer>
+      <p>&copy; 2025 JobAiro. All rights reserved.</p>
+    </footer>
   </body>
 </html>

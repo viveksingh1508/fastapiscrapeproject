@@ -4,14 +4,33 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.schema.job_schema import JobCreate, JobUpdate
 from fastapi.templating import Jinja2Templates
+from sqlalchemy import func
 
 templates = Jinja2Templates(directory="app/templates")
 
 
-async def get_jobs(request: Request, db: AsyncSession):
-    result = await db.execute(select(Job))
+async def get_jobs(
+    request: Request,
+    db: AsyncSession,
+    page: int,
+    limit: int,
+):
+
+    offset = (page - 1) * limit
+    total_jobs = await db.scalar(select(func.count()).select_from(Job))
+    result = await db.execute(select(Job).offset(offset).limit(limit))
     jobs = result.scalars().all()
-    return templates.TemplateResponse("jobs.html", {"request": request, "jobs": jobs})
+    total_pages = (total_jobs + limit - 1) // limit
+    return templates.TemplateResponse(
+        "jobs.html",
+        {
+            "request": request,
+            "jobs": jobs,
+            "page": page,
+            "total_pages": total_pages,
+            "total_jobs": total_jobs,
+        },
+    )
 
 
 async def get_job(request: Request, job_id: int, db: AsyncSession):
