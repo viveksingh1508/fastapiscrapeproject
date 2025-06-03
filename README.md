@@ -1,4 +1,4 @@
-alembic init
+alembic init alembic
 
 # to create migrations
 

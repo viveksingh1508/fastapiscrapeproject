@@ -9,12 +9,21 @@ class Job(Base):
     __tablename__ = "jobs"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(200), nullable=False)
+    job_title = Column(String(200), nullable=False)
     company = Column(String(200), nullable=False)
+    company_profile = Column(Text, nullable=True)
     location = Column(String(200), nullable=True)
-    salary = Column(String(100), nullable=True)
-    type = Column(String(50), nullable=True)
-    description = Column(Text, nullable=True)
+    salary_range = Column(String(100), nullable=True)
+    job_type = Column(String(50), nullable=True)
+    experience = Column(String(50), nullable=True)
+    job_description = Column(Text, nullable=True)
+    qualifications = Column(Text, nullable=True)
+    responsibilities = Column(Text, nullable=True)
+    benefits = Column(Text, nullable=True)
+    skills = Column(Text, nullable=True)
+    preferences = Column(Text, nullable=True)
+    role = Column(String(50), nullable=True)
+    job_portal = Column(String(100), nullable=True)
     posted_at = Column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
