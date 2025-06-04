@@ -5,6 +5,8 @@ from sqlalchemy.future import select
 from app.schema.job_schema import JobCreate, JobUpdate
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import func
+import ast
+import json
 
 templates = Jinja2Templates(directory="app/templates")
 
@@ -40,8 +42,33 @@ async def get_job(request: Request, job_id: int, db: AsyncSession):
         return templates.TemplateResponse(
             "404.html", {"request": request}, status_code=404
         )
+    try:
+        benefits_value = ast.literal_eval(job.benefits)
+        if isinstance(benefits_value, set):
+            # Convert set to string by joining its elements
+            benefits_str = ", ".join(str(b) for b in benefits_value)
+        elif isinstance(benefits_value, str):
+            benefits_str = benefits_value
+        else:
+            benefits_str = str(benefits_value)
+        benefits = [b.strip() for b in benefits_str.split(",") if b.strip()]
+    except Exception as e:
+        benefits = []
+        print(f"Error parsing benefits: {e}")
+
+    try:
+        company_profile = json.loads(job.company_profile)
+    except json.JSONDecodeError:
+        company_profile = {}
+        print("Error parsing company profile, using empty dictionary.")
     return templates.TemplateResponse(
-        "job_details.html", {"request": request, "job": job}
+        "job_details.html",
+        {
+            "request": request,
+            "job": job,
+            "benefits": benefits,
+            "company_profile": company_profile,
+        },
     )
 
 

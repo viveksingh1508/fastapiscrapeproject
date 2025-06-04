@@ -26,10 +26,32 @@
   <body>
     <h1 style="text-align: center">{{ job.title }} at {{ job.company }}</h1>
     <div class="job" style="width: 70%; margin: 0 auto">
+      <p><strong>Company:</strong> {{ job.company }}</p>
+      <p><strong>Type:</strong> {{ job.job_type }}</p>
+      <p><strong>Title:</strong> {{ job.job_title }}</p>
+      <p><strong>Education:</strong> {{ job.qualifications }}</p>
+      <p><strong>Experience:</strong> {{ job.experience }}</p>
+      <p><strong>Role:</strong> {{ job.role }}</p>
       <p><strong>Location:</strong> {{ job.location }}</p>
-      <p><strong>Salary:</strong> {{ job.salary }}</p>
-      <p><strong>Type:</strong> {{ job.type }}</p>
-      <p><strong>Description:</strong>{{ job.description }}</p>
+      <p><strong>Salary Range:</strong> {{ job.salary_range }}</p>
+      <p><strong>Preference:</strong> {{ job.preferences }}</p>
+      <p><strong>Skills:</strong> {{ job.skills }}</p>
+      <p><strong>Responsibilities:</strong> {{ job.responsibilities }}</p>
+      <p><strong>Benefits:</strong></p>
+      <ul>
+        {% for benefit in benefits %}
+        <li>{{ benefit }}</li>
+        {% endfor %}
+      </ul>
+      <p><strong>Description:</strong> {{ job.job_description }}</p>
+      {% if company_profile %}
+      <h3>Company Profile</h3>
+      <ul>
+        {% for key, value in company_profile.items() %}
+        <li><strong>{{ key }}:</strong> {{ value }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
 
       <p>
         <strong>Posted on:</strong>
