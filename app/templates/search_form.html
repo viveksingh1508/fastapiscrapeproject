@@ -1,15 +1,23 @@
-<form action="/jobs/search" method="GET" class="search-area">
+<form
+  id="job-search-form"
+  action="/jobs/search"
+  method="GET"
+  class="search-area"
+>
   <input
     type="text"
     name="keyword"
     placeholder="Search by title or keyword"
-    value="{{ request.query_params['keyword'] | default('') }}"
+    value="{{ request.query_params.get('keyword', '') }}"
   />
   <input
     type="text"
     name="location"
     placeholder="Location (e.g. New York)"
-    value="{{ request.query_params['location'] | default('') }}"
+    value="{{ request.query_params.get('location', '') }}"
   />
   <button type="submit" class="btn search-btn">Search</button>
 </form>
+<p id="search-warning" style="color: red; display: none"></p>
+
+<script src="/static/js/search.js"></script>

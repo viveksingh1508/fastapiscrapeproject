@@ -7,6 +7,7 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy import func
 import ast
 import json
+from fastapi.responses import RedirectResponse
 
 
 templates = Jinja2Templates(directory="app/templates")
@@ -123,6 +124,9 @@ async def search_jobs(
     page: int,
     limit: int,
 ):
+    if not keyword.strip() and not location.strip():
+        return RedirectResponse(request.url_for("/"), status_code=303)
+
     if not isinstance(page, int) or page < 1:
         raise HTTPException(status_code=400, detail="Page must be a positive integer")
     if not isinstance(limit, int) or limit < 1:
