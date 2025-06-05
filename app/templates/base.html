@@ -1,0 +1,23 @@
+<!-- In base.html or your main layout file -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JobAiro</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+    <link rel="stylesheet" href="/static/css/header.css" />
+    <link rel="stylesheet" href="/static/css/footer.css" />
+    <link rel="stylesheet" href="/static/css/search.css" />
+    <!-- <link rel="stylesheet" href="/static/css/jobs.css" /> -->
+
+    <!-- other head content -->
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    {% include "header.html" %} {% block content %}
+    <!-- This is where the content from other templates will be injected -->
+    {% endblock %} {% include "footer.html" %}
+
+    <!-- page content -->
+  </body>
+</html>

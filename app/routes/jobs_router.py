@@ -7,12 +7,25 @@ from fastapi.responses import HTMLResponse
 
 router = APIRouter()
 
+# Uncomment the following route if you want to implement pagination for job listings
 
-@router.get("/", response_class=HTMLResponse)
-async def list_jobs(
-    request: Request, db: AsyncSession = Depends(get_db), page: int = 1, limit: int = 5
+# @router.get("/", response_class=HTMLResponse)
+# async def list_jobs(
+#     request: Request, db: AsyncSession = Depends(get_db), page: int = 1, limit: int = 5
+# ):
+#     return await jobs.get_jobs(request, db, page, limit)
+
+
+@router.get("/search", response_class=HTMLResponse)
+async def search_jobs(
+    request: Request,
+    keyword: str = "",
+    location: str = "",
+    db: AsyncSession = Depends(get_db),
+    page: int = 1,
+    limit: int = 5,
 ):
-    return await jobs.get_jobs(request, db, page, limit)
+    return await jobs.search_jobs(request, keyword, location, db, page, limit)
 
 
 @router.get("/{job_id}", response_model=JobResponse)

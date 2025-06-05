@@ -8,31 +8,33 @@ from sqlalchemy import func
 import ast
 import json
 
+
 templates = Jinja2Templates(directory="app/templates")
 
+# Uncomment the following function if you want to implement pagination for job listings
 
-async def get_jobs(
-    request: Request,
-    db: AsyncSession,
-    page: int,
-    limit: int,
-):
+# async def get_jobs(
+#     request: Request,
+#     db: AsyncSession,
+#     page: int,
+#     limit: int,
+# ):
 
-    offset = (page - 1) * limit
-    total_jobs = await db.scalar(select(func.count()).select_from(Job))
-    result = await db.execute(select(Job).offset(offset).limit(limit))
-    jobs = result.scalars().all()
-    total_pages = (total_jobs + limit - 1) // limit
-    return templates.TemplateResponse(
-        "jobs.html",
-        {
-            "request": request,
-            "jobs": jobs,
-            "page": page,
-            "total_pages": total_pages,
-            "total_jobs": total_jobs,
-        },
-    )
+#     offset = (page - 1) * limit
+#     total_jobs = await db.scalar(select(func.count()).select_from(Job))
+#     result = await db.execute(select(Job).offset(offset).limit(limit))
+#     jobs = result.scalars().all()
+#     total_pages = (total_jobs + limit - 1) // limit
+#     return templates.TemplateResponse(
+#         "jobs.html",
+#         {
+#             "request": request,
+#             "jobs": jobs,
+#             "page": page,
+#             "total_pages": total_pages,
+#             "total_jobs": total_jobs,
+#         },
+#     )
 
 
 async def get_job(request: Request, job_id: int, db: AsyncSession):
@@ -111,3 +113,45 @@ async def delete_job(job_id: int, db: AsyncSession):
     await db.delete(job)
     await db.commit()
     return {"message": "Job deleted"}
+
+
+async def search_jobs(
+    request: Request,
+    keyword: str,
+    location: str,
+    db: AsyncSession,
+    page: int,
+    limit: int,
+):
+    if not isinstance(page, int) or page < 1:
+        raise HTTPException(status_code=400, detail="Page must be a positive integer")
+    if not isinstance(limit, int) or limit < 1:
+        raise HTTPException(status_code=400, detail="Limit must be a positive integer")
+
+    offset = (page - 1) * limit
+    query = select(Job)
+    count_query = select(func.count()).select_from(Job)
+
+    if keyword:
+        query = query.where(Job.job_title.ilike(f"%{keyword}%"))
+        count_query = count_query.where(Job.job_title.ilike(f"%{keyword}%"))
+    if location:
+        query = query.where(Job.location.ilike(f"%{location}%"))
+        count_query = count_query.where(Job.location.ilike(f"%{location}%"))
+
+    result = await db.execute(query.offset(offset).limit(limit))
+    jobs = result.scalars().all()
+
+    total_jobs = await db.scalar(count_query)
+    total_pages = (total_jobs + limit - 1) // limit if total_jobs else 1
+
+    return templates.TemplateResponse(
+        "jobs.html",
+        {
+            "request": request,
+            "jobs": jobs,
+            "page": page,
+            "total_pages": total_pages,
+            "total_jobs": total_jobs,
+        },
+    )

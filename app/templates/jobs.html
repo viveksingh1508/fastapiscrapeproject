@@ -1,70 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jobs Listing</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
-      }
-      .job {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-      }
-      .job h3 {
-        margin: 0 0 5px;
-      }
-      .job p {
-        margin: 5px 0;
-      }
-    </style>
-  </head>
-  <body>
-    <h1 style="text-align: center">Available Jobs</h1>
-    {% for job in jobs %}
-    <a href="/jobs/{{job.id}}" style="text-decoration: none; color: inherit">
-      <div class="job" style="width: 70%; margin: 0 auto">
-        <h2>{{ job.title }}</h2>
-        <p><strong>Company:</strong> {{ job.company }}</p>
-        <p><strong>Title:</strong> {{ job.job_title }}</p>
-        <p><strong>Experience:</strong> {{ job.experience }}</p>
-        <p><strong>Type:</strong> {{ job.job_type }}</p>
-        <p><strong>Role:</strong> {{ job.role }}</p>
-        <p><strong>Location:</strong> {{ job.location }}</p>
-        <p><strong>Salary Range:</strong> {{ job.salary_range }}</p>
-        <p><strong>Preference:</strong> {{ job.preferences }}</p>
-        <p><strong>Skills:</strong> {{ job.skills }}</p>
-        <p><strong>Education:</strong> {{ job.qualifications }}</p>
-        <p>
-          <strong>Description:</strong> {{ job.job_description[:100] }}...
-          <a href="/jobs/{{ job.id }}">Read more</a>
-        </p>
-        <p>
-          <strong>Posted on:</strong>
-          <span data-posted-at="{{job.posted_at}}"></span>
-        </p></div
-    ></a>
+{% extends "base.html" %} {% block head %}
+<link rel="stylesheet" href="/static/css/jobs.css" />
+{% endblock %}{% block content %}
+<header class="main-header">
+  <hr class="header-separator" />
+  {% include "search_form.html" %}
+</header>
 
-    {% else %}
-    <p>No jobs available at the moment.</p>
-    {% endfor %}
-    <div style="text-align: center; margin-top: 20px">
-      {% if page > 1 %}
-      <a href="/jobs?page={{ page - 1 }}" style="margin-right: 10px"
-        >&laquo; Previous</a
-      >
-      {% endif %} Page {{ page }} of {{ total_pages }} {% if page < total_pages
-      %}
-      <a href="/jobs?page={{ page + 1 }}" style="margin-left: 10px"
-        >Next &raquo;</a
-      >
-      {% endif %}
+<h1 style="text-align: center; margin-top: 0px">Available Jobs</h1>
+
+{% for job in jobs %}
+<div class="job-card">
+  <a href="/jobs/{{ job.id }}" style="text-decoration: none; color: inherit">
+    <div class="job" style="width: 70%; margin: 0 auto">
+      <h2>{{ job.title }}</h2>
+      <p><strong>Company:</strong> {{ job.company }}</p>
+      <p><strong>Title:</strong> {{ job.job_title }}</p>
+      <p><strong>Experience:</strong> {{ job.experience }}</p>
+      <p><strong>Type:</strong> {{ job.job_type }}</p>
+      <p><strong>Role:</strong> {{ job.role }}</p>
+      <p><strong>Location:</strong> {{ job.location }}</p>
+      <p><strong>Salary Range:</strong> {{ job.salary_range }}</p>
+      <p><strong>Preference:</strong> {{ job.preferences }}</p>
+      <p><strong>Skills:</strong> {{ job.skills }}</p>
+      <p><strong>Education:</strong> {{ job.qualifications }}</p>
+      <p>
+        <strong>Description:</strong> {{ job.job_description|truncate(100, True,
+        '...') }}
+        <a href="/jobs/{{ job.id }}">Read more</a>
+      </p>
+      <p>
+        <strong>Posted on:</strong>
+        <span data-posted-at="{{ job.posted_at }}"></span>
+      </p>
     </div>
-  </body>
-</html>
+  </a>
+</div>
+
+{% else %}
+<p style="text-align: center">No jobs available at the moment.</p>
+{% endfor %}
+
+<div style="text-align: center; margin-top: 20px">
+  {% if page > 1 %}
+  <a
+    href="?keyword={{ request.query_params.get('keyword', '') }}&location={{ request.query_params.get('location', '') }}&page={{ page - 1 }}"
+    style="margin-right: 10px"
+    >&laquo; Previous</a
+  >
+  {% endif %} Page {{ page }} of {{ total_pages }} {% if page < total_pages %}
+  <a
+    href="?keyword={{ request.query_params.get('keyword', '') }}&location={{ request.query_params.get('location', '') }}&page={{ page + 1 }}"
+    style="margin-left: 10px"
+    >Next &raquo;</a
+  >
+  {% endif %}
+</div>
 
 <script src="/static/js/script.js"></script>
+{% endblock %}
