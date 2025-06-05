@@ -6,7 +6,9 @@
   {% include "search_form.html" %}
 </header>
 
+{% if jobs %}
 <h1 style="text-align: center; margin-top: 0px">Available Jobs</h1>
+{% endif %}
 
 {% for job in jobs %}
 <div class="job-card">
@@ -37,24 +39,52 @@
 </div>
 
 {% else %}
-<p style="text-align: center">No jobs available at the moment.</p>
+</div>  {# closes the job listing wrapper safely if needed #}
+
+{% if request.query_params.get("keyword") or request.query_params.get("location") %}
+  <div style="text-align: center; margin-top: 2rem">
+    <p>
+      The search
+      <strong>
+        "{{ request.query_params.get('keyword', '') }} {{ request.query_params.get('location', '') }}"
+      </strong>
+      did not match any jobs.
+    </p>
+    <p>Search suggestions:</p>
+    <ul style="display: inline-block; text-align: left;">
+      <li>Try more general keywords</li>
+      <li>Check your spelling</li>
+      <li>Replace abbreviations with the entire word</li>
+    </ul>
+  </div>
+{% else %}
+  <p style="text-align: center; margin-top: 2rem">
+    No jobs available at the moment.
+  </p>
+{% endif %}
 {% endfor %}
 
-<div style="text-align: center; margin-top: 20px">
-  {% if page > 1 %}
-  <a
-    href="?keyword={{ request.query_params.get('keyword', '') }}&location={{ request.query_params.get('location', '') }}&page={{ page - 1 }}"
-    style="margin-right: 10px"
-    >&laquo; Previous</a
-  >
-  {% endif %} Page {{ page }} of {{ total_pages }} {% if page < total_pages %}
-  <a
-    href="?keyword={{ request.query_params.get('keyword', '') }}&location={{ request.query_params.get('location', '') }}&page={{ page + 1 }}"
-    style="margin-left: 10px"
-    >Next &raquo;</a
-  >
-  {% endif %}
-</div>
+
+{% if jobs %}
+  <div style="text-align: center; margin-top: 20px">
+    {% if page > 1 %}
+    <a
+      href="?keyword={{ request.query_params.get('keyword', '') }}&location={{ request.query_params.get('location', '') }}&page={{ page - 1 }}"
+      style="margin-right: 10px"
+      >&laquo; Previous</a
+    >
+    {% endif %} 
+    Page {{ page }} of {{ total_pages }} 
+    {% if page < total_pages %}
+    <a
+      href="?keyword={{ request.query_params.get('keyword', '') }}&location={{ request.query_params.get('location', '') }}&page={{ page + 1 }}"
+      style="margin-left: 10px"
+      >Next &raquo;</a
+    >
+    {% endif %}
+  </div>
+{% endif %}
+
 
 <script src="/static/js/script.js"></script>
 {% endblock %}
