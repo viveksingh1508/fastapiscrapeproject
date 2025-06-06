@@ -16,11 +16,6 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
 
-# @app.get("/", response_class=HTMLResponse)
-# async def check(request: Request):
-#     return templates.TemplateResponse(
-#         "index.html", {"request": request, "message": "Welcome to fullstack"}
-#     )
 
 templates = Jinja2Templates(directory="app/templates")
 

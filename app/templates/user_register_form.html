@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block head %}
+<link rel="stylesheet" href="/static/css/user_register_form.css" />
+{% endblock %} {% block content %}
+<div class="register-container">
+  <h2>Create an Account</h2>
+
+  <form action="/user/register" method="post" class="register-form">
+    <input type="text" name="first_name" placeholder="First name" required />
+    {% if errors.first_name %}
+    <p class="error">{{ errors.first_name[0] }}</p>
+    {% endif %}
+
+    <input type="text" name="last_name" placeholder="Surname" required />
+    {% if errors.last_name %}
+    <p class="error">{{ errors.last_name[0] }}</p>
+    {% endif %}
+
+    <input type="text" name="username" placeholder="Username" required />
+    {% if errors.username %}
+    <p class="error">{{ errors.username[0] }}</p>
+    {% endif %}
+
+    <input type="email" name="email" placeholder="Email" required />
+    {% if errors.email %}
+    <p class="error">{{ errors.email[0] }}</p>
+    {% endif %}
+
+    <input type="password" name="password" placeholder="Password" required />
+    {% if errors.password %}
+    <p class="error">{{ errors.password[0] }}</p>
+    {% endif %}
+
+    <input
+      type="password"
+      name="confirm_password"
+      placeholder="Confirm Password"
+      required
+    />
+    {% if errors.confirm_password %}
+    <p class="error">{{ errors.confirm_password[0] }}</p>
+    {% endif %}
+
+    <button type="submit">Register</button>
+  </form>
+  <p class="login-text">
+    Already have an account? <a href="/auth/login">Log in</a>
+  </p>
+</div>
+{% endblock %}

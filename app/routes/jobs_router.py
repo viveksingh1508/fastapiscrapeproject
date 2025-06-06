@@ -28,16 +28,16 @@ async def search_jobs(
     return await jobs.search_jobs(request, keyword, location, db, page, limit)
 
 
+@router.post("/", response_model=JobResponse)
+async def create_job(job_data: JobCreate, db: AsyncSession = Depends(get_db)):
+    return await jobs.create_job(job_data, db)
+
+
 @router.get("/{job_id}", response_model=JobResponse)
 async def retrieve_job(
     request: Request, job_id: int, db: AsyncSession = Depends(get_db)
 ):
     return await jobs.get_job(request, job_id, db)
-
-
-@router.post("/", response_model=JobResponse)
-async def create_job(job_data: JobCreate, db: AsyncSession = Depends(get_db)):
-    return await jobs.create_job(job_data, db)
 
 
 @router.put("/{job_id}", response_model=JobResponse)

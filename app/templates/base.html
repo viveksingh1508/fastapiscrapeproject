@@ -14,7 +14,9 @@
     {% block head %}{% endblock %}
   </head>
   <body>
-    {% include "header.html" %} {% block content %}
+    {% include "header.html" %}
+    <div><hr class="header-separator" /></div>
+    {% block content %}
     <!-- This is where the content from other templates will be injected -->
     {% endblock %} {% include "footer.html" %}
 

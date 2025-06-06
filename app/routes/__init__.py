@@ -6,6 +6,6 @@ from .jobs_router import router as jobs_router
 
 router = APIRouter()
 
-router.include_router(users_router, prefix="/users", tags=["users"])
+router.include_router(users_router, prefix="/user", tags=["user"])
 router.include_router(auth_router, prefix="/auth", tags=["auth"])
-router.include_router(jobs_router, prefix="/jobs", tags=["jobs"])
+router.include_router(jobs_router, prefix="/job", tags=["job"])

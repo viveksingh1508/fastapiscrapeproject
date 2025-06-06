@@ -1,8 +1,5 @@
 {% extends "base.html" %} {% block content %}
-<header class="main-header">
-  <hr class="header-separator" />
-  {% include "search_form.html" %}
-</header>
+<header class="main-header">{% include "search_form.html" %}</header>
 <div class="banner-image">
   <img src="/static/images/banner.webp" alt="Job Search Banner" />
 </div>
@@ -24,10 +21,10 @@
   </p>
   <div class="header-cta">
     <p>
-      <a href="/login" class="btn btn-primary">Get Started</a>
+      <a href="/auth/login" class="btn btn-primary">Get Started</a>
     </p>
     <p>
-      <a href="/admin" class="btn btn-secondary">Post a Job</a>
+      <a href="/auth/admin" class="btn btn-secondary">Post a Job</a>
     </p>
   </div>
 </section>
