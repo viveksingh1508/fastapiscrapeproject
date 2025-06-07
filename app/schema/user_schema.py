@@ -27,10 +27,12 @@ class UserCreate(BaseModel):
     @classmethod
     def validate_username(cls, v):
         if len(v) < 3:
-            raise ValueError("Username must be at least 3 characters long")
+            raise ValueError("must be at least 3 characters long")
         if len(v) > 50:
-            raise ValueError("Username must not exceed 50 characters")
-        return v
+            raise ValueError("must not exceed 50 characters")
+        if not v.isalnum():
+            raise ValueError("must contain only letters and numbers")
+        return v.strip()
 
     @field_validator("password")
     @classmethod
@@ -52,6 +54,13 @@ class UserCreate(BaseModel):
         if info.data.get("password") and v != info.data["password"]:
             raise ValueError("Passwords do not match")
         return v
+
+    @field_validator("first_name", "last_name")
+    @classmethod
+    def validate_names(cls, v):
+        if not v.strip():
+            raise ValueError("cannot be empty")
+        return v.strip()
 
 
 class PasswordUpdate(BaseModel):

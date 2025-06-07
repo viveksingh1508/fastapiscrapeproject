@@ -3,6 +3,8 @@ from shared.models import User
 from app.schema.user_schema import UserCreate, PasswordUpdate
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy import or_
+from sqlalchemy.exc import IntegrityError
 from app.helper.utils import hash_password, verify_password
 
 # @app.get("/", response_class=HTMLResponse)
@@ -28,10 +30,17 @@ async def get_user(user_id: int, db: AsyncSession):
 
 async def create_user(user_data: UserCreate, db: AsyncSession):
     existing_user = await db.execute(
-        select(User).where(User.username == user_data.username)
+        select(User).where(
+            or_(User.username == user_data.username, User.email == user_data.email)
+        )
     )
-    if existing_user.scalars().first():
-        raise HTTPException(status_code=400, detail="Username already exists")
+
+    existing_user = existing_user.scalars().first()
+    if existing_user:
+        if existing_user.username == user_data.username:
+            raise HTTPException(status_code=400, detail="Username already exists")
+        raise HTTPException(status_code=400, detail="Email already registered")
+
     user = User(
         first_name=user_data.first_name,
         last_name=user_data.last_name,
@@ -39,9 +48,16 @@ async def create_user(user_data: UserCreate, db: AsyncSession):
         email=user_data.email,
         password=hash_password(user_data.password),
     )
-    db.add(user)
-    await db.commit()
-    await db.refresh(user)
+    try:
+        db.add(user)
+        await db.commit()
+        await db.refresh(user)
+    except IntegrityError:
+        await db.rollback()
+        raise HTTPException(
+            status_code=400, detail="Registration failed due to database error"
+        )
+
     return user
 
 

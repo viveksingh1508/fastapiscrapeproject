@@ -4,38 +4,94 @@
 <div class="register-container">
   <h2>Create an Account</h2>
 
+  <!-- Non-field errors -->
+  {% if errors.non_field %}
+  <div class="error-message">
+    {% for error in errors.non_field %}
+    <p>{{ error }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
   <form action="/user/register" method="post" class="register-form">
-    <input type="text" name="first_name" placeholder="First name" required />
+    <!-- First Name -->
+    <input
+      type="text"
+      name="first_name"
+      placeholder="First name"
+      required
+      value="{{ form_data.first_name | default('') }}"
+    />
     {% if errors.first_name %}
     <p class="error">{{ errors.first_name[0] }}</p>
     {% endif %}
 
-    <input type="text" name="last_name" placeholder="Surname" required />
+    <!-- Last Name -->
+    <input
+      type="text"
+      name="last_name"
+      placeholder="Surname"
+      required
+      value="{{ form_data.last_name | default('') }}"
+    />
     {% if errors.last_name %}
     <p class="error">{{ errors.last_name[0] }}</p>
     {% endif %}
 
-    <input type="text" name="username" placeholder="Username" required />
+    <!-- Username -->
+    <input
+      type="text"
+      name="username"
+      placeholder="Username"
+      required
+      value="{{ form_data.username | default('') }}"
+    />
     {% if errors.username %}
     <p class="error">{{ errors.username[0] }}</p>
     {% endif %}
 
-    <input type="email" name="email" placeholder="Email" required />
+    <!-- Email -->
+    <input
+      type="email"
+      name="email"
+      placeholder="Email"
+      required
+      value="{{ form_data.email | default('') }}"
+    />
     {% if errors.email %}
     <p class="error">{{ errors.email[0] }}</p>
     {% endif %}
 
-    <input type="password" name="password" placeholder="Password" required />
+    <!-- Password with show/hide toggle -->
+    <div class="password-container">
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="Password"
+        required
+      />
+      <span class="toggle-password" onclick="togglePassword('password')"
+        >👁️</span
+      >
+    </div>
     {% if errors.password %}
     <p class="error">{{ errors.password[0] }}</p>
     {% endif %}
 
-    <input
-      type="password"
-      name="confirm_password"
-      placeholder="Confirm Password"
-      required
-    />
+    <!-- Confirm Password with show/hide toggle -->
+    <div class="password-container">
+      <input
+        type="password"
+        name="confirm_password"
+        id="confirm_password"
+        placeholder="Confirm Password"
+        required
+      />
+      <span class="toggle-password" onclick="togglePassword('confirm_password')"
+        >👁️</span
+      >
+    </div>
     {% if errors.confirm_password %}
     <p class="error">{{ errors.confirm_password[0] }}</p>
     {% endif %}
@@ -46,4 +102,12 @@
     Already have an account? <a href="/auth/login">Log in</a>
   </p>
 </div>
+
+<script>
+  function togglePassword(fieldId) {
+    const passwordField = document.getElementById(fieldId);
+    passwordField.type =
+      passwordField.type === "password" ? "text" : "password";
+  }
+</script>
 {% endblock %}

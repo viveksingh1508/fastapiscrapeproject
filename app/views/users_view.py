@@ -44,14 +44,12 @@ async def create_user_view(request: Request, db: AsyncSession):
         )
 
     except HTTPException as e:
-        error_dict = (
-            e.detail if isinstance(e.detail, dict) else {"non_field": [e.detail]}
-        )
+        error_dict = {"non_field": [e.detail]}
         return templates.TemplateResponse(
             "user_register_form.html",
             {
                 "request": request,
-                "errors": error_dict,  # Should be a dictionary
+                "errors": error_dict,
                 "form_data": form,
             },
             status_code=400,

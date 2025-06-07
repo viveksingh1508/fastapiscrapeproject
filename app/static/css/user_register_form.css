@@ -33,11 +33,73 @@
     background-color: #218838;
 }
 
-.error {
-    color: red;
-    margin-bottom: 10px;
+.password-container {
+    position: relative;
+    width: 100%;
 }
 
-.login-text {
-    margin-top: 15px;
+
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
 }
+
+/* Error message styling */
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Make all input fields consistent */
+.register-form input[type="text"],
+.register-form input[type="email"],
+.register-form input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* Password container adjustments */
+.password-container {
+    position: relative;
+    width: 100%;
+    /* Ensure it takes full width */
+}
+
+/* .toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 16px;
+} */
+
+/* Remove extra spacing caused by the toggle */
+/* .password-container input[type="password"],
+.password-container input[type="text"] {
+    padding-right: 35px;
+} */
