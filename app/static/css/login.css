@@ -41,3 +41,30 @@
 .signup-text {
     margin-top: 15px;
 }
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+}
+
+.password-input-container {
+    position: relative;
+    width: 100%;
+    margin: 8px 0;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 12px 40px 12px 12px;
+    /* Right padding for eye icon */
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}

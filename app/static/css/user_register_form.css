@@ -49,7 +49,6 @@
     user-select: none;
 }
 
-/* Error message styling */
 .error-message {
     color: #dc3545;
     background-color: #f8d7da;
@@ -65,7 +64,6 @@
     margin-top: 5px;
 }
 
-/* Make all input fields consistent */
 .register-form input[type="text"],
 .register-form input[type="email"],
 .register-form input[type="password"] {
@@ -78,28 +76,7 @@
     font-size: 16px;
 }
 
-/* Password container adjustments */
 .password-container {
     position: relative;
     width: 100%;
-    /* Ensure it takes full width */
 }
-
-/* .toggle-password {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    user-select: none;
-    background: none;
-    border: none;
-    padding: 0;
-    font-size: 16px;
-} */
-
-/* Remove extra spacing caused by the toggle */
-/* .password-container input[type="password"],
-.password-container input[type="text"] {
-    padding-right: 35px;
-} */

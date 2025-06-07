@@ -4,7 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.helper.utils import verify_password
 from jose import JWTError, jwt
 from sqlalchemy.future import select
+from sqlalchemy import or_
 from datetime import datetime, timedelta, timezone
+
 
 # from fastapi.security import OAuth2PasswordRequestForm
 
@@ -15,6 +17,11 @@ from dotenv import load_dotenv
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
+JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
+
+print("JWT_ALGORITHM", JWT_ALGORITHM)
+print("SECRET_KEY", SECRET_KEY)
+print("ACCESS_TOKEN_EXPIRE_MINUTES", ACCESS_TOKEN_EXPIRE_MINUTES)
 
 
 def create_access_token(data: dict, expires_delta=None):
@@ -23,22 +30,24 @@ def create_access_token(data: dict, expires_delta=None):
         expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     )
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm="HS256")
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=JWT_ALGORITHM)
     return encoded_jwt
 
 
 def decode_access_token(token: str):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=JWT_ALGORITHM)
         return payload
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
 
 async def authenticate_user(username: str, password: str, db: AsyncSession):
-    result = await db.execute(select(User).where(User.username == username))
-    user = result.scalars().first()
     try:
+        result = await db.execute(
+            select(User).where(or_(User.username == username, User.email == username))
+        )
+        user = result.scalars().first()
         if not user or not verify_password(password, user.password):
             return None
         return user
@@ -52,8 +61,15 @@ async def login(username: str, password: str, db: AsyncSession):
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    access_token = create_access_token(data={"sub": user.username})
-    return {"access_token": access_token, "token_type": "bearer"}
+    access_token = create_access_token(
+        data={"sub": user.username, "user_id": str(user.id), "email": user.email}
+    )
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user_id": user.id,
+        "email": user.email,
+    }
 
 
 async def logout(user_id: int, db: AsyncSession):

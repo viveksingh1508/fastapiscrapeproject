@@ -10,14 +10,29 @@
     <input
       type="text"
       name="username"
+      id="username"
+      value="{{ username or '' }}"
       placeholder="Username or Email"
       required
     />
-    <input type="password" name="password" placeholder="Password" required />
+    <div class="password-input-container">
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="Password"
+        required
+      />
+      <span class="toggle-password" onclick="togglePassword('password')"
+        >👁️</span
+      >
+    </div>
+
     <button type="submit">Login</button>
   </form>
   <p class="signup-text">
     Don’t have an account? <a href="/user/register">Sign up</a>
   </p>
 </div>
+<script src="/static/js/togglePassword.js"></script>
 {% endblock %}

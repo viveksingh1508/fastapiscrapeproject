@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, func
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import Boolean
+import sqlalchemy as sa
 
 
 Base = declarative_base()
@@ -39,8 +40,12 @@ class User(Base):
     username = Column(String(50), unique=True, nullable=False)
     email = Column(String(100), unique=True, nullable=False)
     password = Column(String(200), nullable=False)
-    is_active = Column(Boolean, default=True, nullable=False)
-    is_admin = Column(Boolean, default=False, nullable=False)
+    is_active = Column(
+        Boolean, default=True, server_default=sa.text("true"), nullable=False
+    )
+    is_admin = Column(
+        Boolean, default=False, server_default=sa.text("false"), nullable=False
+    )
     profile_picture = Column(String(200), nullable=True)
     last_login = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(
