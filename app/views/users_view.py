@@ -11,13 +11,12 @@ from starlette.status import HTTP_302_FOUND
 templates = Jinja2Templates(directory="app/templates")
 
 
-async def register_form(request: Request):
-    return templates.TemplateResponse(
-        "user_register_form.html", {"request": request, "errors": {}, "form_data": {}}
-    )
-
-
 async def create_user_view(request: Request, db: AsyncSession):
+    if request.method != "POST":
+        return templates.TemplateResponse(
+            "user_register_form.html",
+            {"request": request, "errors": {}, "form_data": {}},
+        )
     form = await request.form()
     try:
         user_data = UserCreate(**form)

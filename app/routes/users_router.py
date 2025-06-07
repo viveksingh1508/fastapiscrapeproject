@@ -15,22 +15,14 @@ async def list_users(db: AsyncSession = Depends(get_db)):
     return await users.get_users(db)
 
 
-@router.get("/register")
-async def register_form(request: Request):
-    return await users_view.register_form(request)
+@router.get("/register", response_class=HTMLResponse)
+async def register_form(request: Request, db: AsyncSession = Depends(get_db)):
+    return await users_view.create_user_view(request, db)
 
 
 @router.post("/register", response_class=HTMLResponse)
 async def create_user(request: Request, db: AsyncSession = Depends(get_db)):
     return await users_view.create_user_view(request, db)
-
-
-# @router.post("/register", response_class=HTMLResponse)
-# async def create_user(
-#     user_data: UserCreate = Depends(UserCreate.as_form),
-#     db: AsyncSession = Depends(get_db),
-# ):
-#     return await users.create_user(user_data, db)
 
 
 @router.get("/{user_id}", response_model=UserResponse)

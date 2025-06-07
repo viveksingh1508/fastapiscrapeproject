@@ -1,9 +1,12 @@
 from pydantic import BaseModel
 
 
+from pydantic import Field
+
+
 class UserLogin(BaseModel):
-    username: str
-    password: str
+    username: str = Field(..., example="user123")
+    password: str = Field(..., example="strongpassword")
 
 
 class LoginResponse(BaseModel):

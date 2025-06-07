@@ -5,9 +5,9 @@ from app.helper.utils import verify_password
 from jose import JWTError, jwt
 from sqlalchemy.future import select
 from datetime import datetime, timedelta, timezone
-from fastapi.security import OAuth2PasswordRequestForm
-from fastapi.templating import Jinja2Templates
-from fastapi import Request
+
+# from fastapi.security import OAuth2PasswordRequestForm
+
 
 import os
 from dotenv import load_dotenv
@@ -15,9 +15,6 @@ from dotenv import load_dotenv
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
-
-
-templates = Jinja2Templates(directory="app/templates")
 
 
 def create_access_token(data: dict, expires_delta=None):
@@ -49,22 +46,14 @@ async def authenticate_user(username: str, password: str, db: AsyncSession):
         return None
 
 
-async def login(form_data: OAuth2PasswordRequestForm, db: AsyncSession):
-    user = await authenticate_user(form_data.username, form_data.password, db)
+# async def login(form_data: OAuth2PasswordRequestForm, db: AsyncSession):
+async def login(username: str, password: str, db: AsyncSession):
+    user = await authenticate_user(username, password, db)
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     access_token = create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer"}
-
-
-async def login_page(request: Request):
-    return templates.TemplateResponse(
-        "login.html",
-        {
-            "request": request,
-        },
-    )
 
 
 async def logout(user_id: int, db: AsyncSession):
