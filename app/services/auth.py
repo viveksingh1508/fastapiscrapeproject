@@ -6,6 +6,7 @@ from jose import JWTError, jwt
 from sqlalchemy.future import select
 from sqlalchemy import or_
 from datetime import datetime, timedelta, timezone
+from fastapi.responses import RedirectResponse
 
 
 # from fastapi.security import OAuth2PasswordRequestForm
@@ -75,13 +76,10 @@ async def login(username: str, password: str, db: AsyncSession):
     }
 
 
-async def logout(user_id: int, db: AsyncSession):
-    result = await db.execute(select(User).where(User.id == user_id))
-    user = result.scalars().first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    # Here you might want to implement logic to invalidate the user's session
-    return {"message": "User logged out successfully"}
+async def logout(request: Request):
+    response = RedirectResponse(url="/", status_code=302)
+    response.delete_cookie("access_token")
+    return response
 
 
 async def get_current_user_from_cookie(request: Request):

@@ -15,3 +15,8 @@ async def login_page(request: Request, db: AsyncSession = Depends(get_db)):
 @router.post("/login", response_class=HTMLResponse)
 async def login(request: Request, db: AsyncSession = Depends(get_db)):
     return await auth_view.login_view(request, db)
+
+
+@router.get("/logout", response_class=HTMLResponse)
+async def logout(request: Request):
+    return await auth_view.logout(request)
