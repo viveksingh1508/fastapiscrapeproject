@@ -1,10 +1,9 @@
-from fastapi.templating import Jinja2Templates
 from fastapi import Request, HTTPException
 from app.services.auth import login, get_current_user_from_cookie, logout
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.responses import RedirectResponse
 from starlette.status import HTTP_302_FOUND
-
+from app.views import custom_render_templates
 import os
 from dotenv import load_dotenv
 
@@ -12,12 +11,11 @@ load_dotenv()
 
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
 
-templates = Jinja2Templates(directory="app/templates")
-
 
 async def login_view(request: Request, db: AsyncSession):
     if request.method != "POST":
-        return templates.TemplateResponse(
+        return custom_render_templates(
+            request,
             "login.html",
             {"request": request},
         )
@@ -25,7 +23,8 @@ async def login_view(request: Request, db: AsyncSession):
     username = form.get("username", "").strip()
     password = form.get("password", "")
     if not username or not password:
-        return templates.TemplateResponse(
+        return custom_render_templates(
+            request,
             "login.html",
             {
                 "request": request,
@@ -47,7 +46,7 @@ async def login_view(request: Request, db: AsyncSession):
         )
         return response
     except HTTPException:
-        return templates.TemplateResponse(
+        return custom_render_templates(
             "login.html",
             {
                 "request": request,
@@ -65,7 +64,7 @@ async def get_user(request: Request):
 
 async def logout_view(request: Request):
     logout(request)
-    return templates.TemplateResponse(
+    return custom_render_templates(
         "index.html",
         {"request": request, "user": {}},
     )

@@ -1,19 +1,16 @@
 from app.services import users
 from app.schema.user_schema import UserCreate
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi.templating import Jinja2Templates
 from fastapi import Request, HTTPException
 from pydantic import ValidationError
 from fastapi.responses import RedirectResponse
 from starlette.status import HTTP_302_FOUND
-
-
-templates = Jinja2Templates(directory="app/templates")
+from app.views import custom_render_templates
 
 
 async def create_user_view(request: Request, db: AsyncSession):
     if request.method != "POST":
-        return templates.TemplateResponse(
+        return custom_render_templates(
             "user_register_form.html",
             {"request": request, "errors": {}, "form_data": {}},
         )
@@ -32,7 +29,7 @@ async def create_user_view(request: Request, db: AsyncSession):
 
             error_dict.setdefault(field, []).append(msg)
 
-        return templates.TemplateResponse(
+        return custom_render_templates(
             "user_register_form.html",
             {
                 "request": request,
@@ -44,7 +41,7 @@ async def create_user_view(request: Request, db: AsyncSession):
 
     except HTTPException as e:
         error_dict = {"non_field": [e.detail]}
-        return templates.TemplateResponse(
+        return custom_render_templates(
             "user_register_form.html",
             {
                 "request": request,
