@@ -3,14 +3,10 @@ from shared.models import Job
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.schema.job_schema import JobCreate, JobUpdate
-from fastapi.templating import Jinja2Templates
 from sqlalchemy import func
 import ast
 import json
-from fastapi.responses import RedirectResponse
 
-
-templates = Jinja2Templates(directory="app/templates")
 
 # Uncomment the following function if you want to implement pagination for job listings
 
@@ -42,9 +38,7 @@ async def get_job(request: Request, job_id: int, db: AsyncSession):
     result = await db.execute(select(Job).where(Job.id == job_id))
     job = result.scalars().first()
     if not job:
-        return templates.TemplateResponse(
-            "404.html", {"request": request}, status_code=404
-        )
+        return None
     try:
         benefits_value = ast.literal_eval(job.benefits)
         if isinstance(benefits_value, set):
@@ -64,15 +58,12 @@ async def get_job(request: Request, job_id: int, db: AsyncSession):
     except json.JSONDecodeError:
         company_profile = {}
         print("Error parsing company profile, using empty dictionary.")
-    return templates.TemplateResponse(
-        "job_details.html",
-        {
-            "request": request,
-            "job": job,
-            "benefits": benefits,
-            "company_profile": company_profile,
-        },
-    )
+    return {
+        "request": request,
+        "job": job,
+        "benefits": benefits,
+        "company_profile": company_profile,
+    }
 
 
 async def create_job(job_data: JobCreate, db: AsyncSession):
@@ -125,7 +116,7 @@ async def search_jobs(
     limit: int,
 ):
     if not keyword.strip() and not location.strip():
-        return RedirectResponse(request.url_for("/"), status_code=303)
+        return None
 
     if not isinstance(page, int) or page < 1:
         raise HTTPException(status_code=400, detail="Page must be a positive integer")
@@ -149,13 +140,10 @@ async def search_jobs(
     total_jobs = await db.scalar(count_query)
     total_pages = (total_jobs + limit - 1) // limit if total_jobs else 1
 
-    return templates.TemplateResponse(
-        "jobs.html",
-        {
-            "request": request,
-            "jobs": jobs,
-            "page": page,
-            "total_pages": total_pages,
-            "total_jobs": total_jobs,
-        },
-    )
+    return {
+        "request": request,
+        "jobs": jobs,
+        "page": page,
+        "total_pages": total_pages,
+        "total_jobs": total_jobs,
+    }

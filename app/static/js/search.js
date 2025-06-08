@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Show warning on home page
         warning.textContent = "Please enter a keyword or location to search.";
         warning.style.display = "block";
-      } else if (path.startsWith("/jobs")) {
+      } else if (path.startsWith("/job")) {
         // Redirect to home from jobs page
         window.location.href = "/";
       }

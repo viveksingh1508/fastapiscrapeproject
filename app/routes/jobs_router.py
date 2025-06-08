@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from shared.backenddb import get_db
 from app.schema.job_schema import JobResponse, JobCreate, JobUpdate
 from fastapi.responses import HTMLResponse
+from app.views import job_view
 
 router = APIRouter()
 
@@ -25,7 +26,7 @@ async def search_jobs(
     page: int = 1,
     limit: int = 5,
 ):
-    return await jobs.search_jobs(request, keyword, location, db, page, limit)
+    return await job_view.search_jobs_view(request, keyword, location, db, page, limit)
 
 
 @router.post("/", response_model=JobResponse)
@@ -37,7 +38,7 @@ async def create_job(job_data: JobCreate, db: AsyncSession = Depends(get_db)):
 async def retrieve_job(
     request: Request, job_id: int, db: AsyncSession = Depends(get_db)
 ):
-    return await jobs.get_job(request, job_id, db)
+    return await job_view.get_job_view(request, job_id, db)
 
 
 @router.put("/{job_id}", response_model=JobResponse)
