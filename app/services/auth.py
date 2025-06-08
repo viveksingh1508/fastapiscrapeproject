@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, Request
 from shared.models import User
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.helper.utils import verify_password
@@ -18,10 +18,6 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
-
-print("JWT_ALGORITHM", JWT_ALGORITHM)
-print("SECRET_KEY", SECRET_KEY)
-print("ACCESS_TOKEN_EXPIRE_MINUTES", ACCESS_TOKEN_EXPIRE_MINUTES)
 
 
 def create_access_token(data: dict, expires_delta=None):
@@ -62,13 +58,20 @@ async def login(username: str, password: str, db: AsyncSession):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     access_token = create_access_token(
-        data={"sub": user.username, "user_id": str(user.id), "email": user.email}
+        data={
+            "sub": user.username,
+            "user_id": str(user.id),
+            "email": user.email,
+            "is_active": user.is_active,
+            "is_admin": user.is_admin,
+            "iat": datetime.now(timezone.utc).timestamp(),
+        }
     )
     return {
         "access_token": access_token,
         "token_type": "bearer",
         "user_id": user.id,
-        "email": user.email,
+        "username": user.username,
     }
 
 
@@ -79,3 +82,18 @@ async def logout(user_id: int, db: AsyncSession):
         raise HTTPException(status_code=404, detail="User not found")
     # Here you might want to implement logic to invalidate the user's session
     return {"message": "User logged out successfully"}
+
+
+async def get_current_user_from_cookie(request: Request):
+    token = request.cookies.get("access_token")
+    if not token:
+        return None
+    scheme, _, param = token.partition(" ")
+    if scheme.lower() != "bearer":
+        return None
+    payload = None
+    try:
+        payload = decode_access_token(param)
+    except HTTPException:
+        return None
+    return payload

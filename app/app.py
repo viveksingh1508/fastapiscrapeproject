@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from app.routes import router as api_router
+from app.views.auth_view import get_user
 
 
 load_dotenv()
@@ -46,10 +47,15 @@ async def docs():
 
 
 @app.get("/")
-async def root(request: Request):
-    return templates.TemplateResponse(
-        "index.html",
-        {
-            "request": request,
-        },
-    )
+async def home(request: Request):
+    user = await get_user(request)
+    if user:
+        return templates.TemplateResponse(
+            "index.html",
+            {"request": request, "user": user},
+        )
+    else:
+        return templates.TemplateResponse(
+            "index.html",
+            {"request": request, "user": {}},
+        )

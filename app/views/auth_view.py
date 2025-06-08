@@ -1,6 +1,6 @@
 from fastapi.templating import Jinja2Templates
 from fastapi import Request, HTTPException
-from app.services.auth import login
+from app.services.auth import login, get_current_user_from_cookie
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.responses import RedirectResponse
 from starlette.status import HTTP_302_FOUND
@@ -56,3 +56,8 @@ async def login_view(request: Request, db: AsyncSession):
             },
             status_code=401,
         )
+
+
+async def get_user(request: Request):
+    user = await get_current_user_from_cookie(request)
+    return user

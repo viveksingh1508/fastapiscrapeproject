@@ -1,3 +1,4 @@
+/* Align both nav sections */
 .nav-left,
 .nav-right {
     position: absolute;
@@ -10,11 +11,13 @@
 
 .nav-right {
     right: 20px;
+    display: flex;
+    align-items: center;
 }
 
-
-
-.nav-btn {
+/* Common button style (both <a> and <p>) */
+.nav-btn,
+.nav-btn-sign {
     text-decoration: none;
     color: #333;
     margin-left: 20px;
@@ -23,26 +26,20 @@
     cursor: pointer;
 }
 
-.nav-btn:hover {
-    text-decoration: underline;
-}
-
-
-
+/* Sign in / welcome text style */
 .nav-btn-sign {
-    text-decoration: none;
     color: #007bff;
-    margin-left: 20px;
-    font-size: 16px;
     font-weight: bold;
-    cursor: pointer;
 }
 
+/* Hover only for <a>, not <p> */
+.nav-btn:hover,
 .nav-btn-sign:hover {
     text-decoration: underline;
 }
 
+/* Vertical separator styling */
 .separator {
-    margin: 20px 0;
-    color: #333;
+    margin: 0 10px;
+    color: #888;
 }
