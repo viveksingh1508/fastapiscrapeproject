@@ -8,7 +8,6 @@ env_path = Path("/.env")
 load_dotenv(dotenv_path=env_path)
 
 BACKEND_DATABASE_URL = os.getenv("BACKEND_DATABASE_URL")
-print(f"Connecting to database at {BACKEND_DATABASE_URL}")
 
 engine = create_async_engine(BACKEND_DATABASE_URL, echo=True)
 AsyncSessionLocal = sessionmaker(

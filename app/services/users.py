@@ -20,14 +20,6 @@ async def get_users(db: AsyncSession):
     return users
 
 
-async def get_user(user_id: int, db: AsyncSession):
-    result = await db.execute(select(User).where(User.id == user_id))
-    user = result.scalars().first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
-
-
 async def create_user(user_data: UserCreate, db: AsyncSession):
     existing_user = await db.execute(
         select(User).where(

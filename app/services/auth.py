@@ -9,31 +9,35 @@ from datetime import datetime, timedelta, timezone
 from fastapi.responses import RedirectResponse
 
 
-# from fastapi.security import OAuth2PasswordRequestForm
-
-
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-SECRET_KEY = os.getenv("SECRET_KEY")
+ACCESS_SECRET_KEY = os.getenv("ACCESS_SECRET_KEY")
+REFRESH_SECRET_KEY = os.getenv("REFRESH_SECRET_KEY")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
+REFRESH_TOKEN_EXPIRE_MINUTES = int(os.getenv("REFRESH_TOKEN_EXPIRE_MINUTES", 60))
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
 
 
-def create_access_token(data: dict, expires_delta=None):
+def create_token(data: dict, token_type: str, expires_delta=None):
     to_encode = data.copy()
+
     expire = datetime.now(timezone.utc) + (
         expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        if token_type == "access"
+        else timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES)
     )
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=JWT_ALGORITHM)
+    to_encode.update({"exp": expire, "type": token_type})
+    sigining_key = ACCESS_SECRET_KEY if token_type == "access" else REFRESH_SECRET_KEY
+    encoded_jwt = jwt.encode(to_encode, sigining_key, algorithm=JWT_ALGORITHM)
     return encoded_jwt
 
 
-def decode_access_token(token: str):
+def decode_token(token: str, token_type: str):
+    secret_kye = ACCESS_SECRET_KEY if token_type == "access" else REFRESH_SECRET_KEY
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=JWT_ALGORITHM)
+        payload = jwt.decode(token, secret_kye, algorithms=JWT_ALGORITHM)
         return payload
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
@@ -57,19 +61,20 @@ async def login(username: str, password: str, db: AsyncSession):
     user = await authenticate_user(username, password, db)
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials")
+    data = {
+        "sub": user.username,
+        "user_id": str(user.id),
+        "email": user.email,
+        "is_active": user.is_active,
+        "is_admin": user.is_admin,
+        "iat": datetime.now(timezone.utc).timestamp(),
+    }
 
-    access_token = create_access_token(
-        data={
-            "sub": user.username,
-            "user_id": str(user.id),
-            "email": user.email,
-            "is_active": user.is_active,
-            "is_admin": user.is_admin,
-            "iat": datetime.now(timezone.utc).timestamp(),
-        }
-    )
+    access_token = create_token(data, "access")
+    refresh_token = create_token(data, "refresh")
     return {
         "access_token": access_token,
+        "refresh_token": refresh_token,
         "token_type": "bearer",
         "user_id": user.id,
         "username": user.username,
@@ -82,7 +87,7 @@ async def logout(request: Request):
     return response
 
 
-async def get_current_user_from_cookie(request: Request):
+async def get_current_user_from_cookie(request: Request, db: AsyncSession):
     token = request.cookies.get("access_token")
     if not token:
         return None
@@ -91,7 +96,57 @@ async def get_current_user_from_cookie(request: Request):
         return None
     payload = None
     try:
-        payload = decode_access_token(param)
-    except HTTPException:
-        return None
+        payload = decode_token(param, "access")
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid Token")
+    user_id = payload.get("user_id")
+
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Invalid token payload")
+    try:
+        user = await db.get(User, int(user_id))
+    except Exception as e:
+        print(f"cookies exception {e}")
+    if not user or not user.is_active:
+        raise HTTPException(status_code=403, detail="User is inactive")
     return payload
+
+
+async def get_user(user_id: int, db: AsyncSession):
+    result = await db.execute(select(User).where(User.id == user_id))
+    user = result.scalars().first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+
+
+async def refresh_token(refresh_token: str, db: AsyncSession):
+    try:
+        payload = decode_token(refresh_token, "refresh")
+        if payload.get("type") != "refresh":
+            raise HTTPException(status_code=401, detail="Invalid token type")
+
+        user = await get_user(payload["user_id"], db)
+        if not user or not user.is_active:
+            raise HTTPException(status_code=401, detail="User inactive")
+
+        data = {
+            "sub": user.username,
+            "user_id": str(user.id),
+            "email": user.email,
+            "is_active": user.is_active,
+            "is_admin": user.is_admin,
+            "iat": datetime.now(timezone.utc).timestamp(),
+        }
+        new_access_token = create_token(data, "access")
+        new_refresh_token = create_token(data, "refresh")
+
+        return {
+            "access_token": new_access_token,
+            "refresh_token": new_refresh_token,
+            "token_type": "bearer",
+            "user_id": user.id,
+            "username": user.username,
+        }
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid refresh token")

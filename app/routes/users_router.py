@@ -25,9 +25,9 @@ async def create_user(request: Request, db: AsyncSession = Depends(get_db)):
     return await users_view.create_user_view(request, db)
 
 
-@router.get("/{user_id}", response_model=UserResponse)
-async def retrieve_user(user_id: int, db: AsyncSession = Depends(get_db)):
-    return await users.get_user(user_id, db)
+# @router.get("/{user_id}", response_model=UserResponse)
+# async def retrieve_user(user_id: int, db: AsyncSession = Depends(get_db)):
+#     return await users.get_user(user_id, db)
 
 
 @router.put("/{user_id}", response_model=UserResponse)

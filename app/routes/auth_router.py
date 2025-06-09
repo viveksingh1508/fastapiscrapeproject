@@ -20,3 +20,8 @@ async def login(request: Request, db: AsyncSession = Depends(get_db)):
 @router.get("/logout", response_class=HTMLResponse)
 async def logout(request: Request):
     return await auth_view.logout(request)
+
+
+@router.post("/refresh", response_class=HTMLResponse)
+async def refresh_token(request: Request, db: AsyncSession = Depends(get_db)):
+    return await auth_view.refresh_token_view(request, db)
