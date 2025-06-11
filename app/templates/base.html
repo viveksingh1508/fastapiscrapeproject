@@ -1,4 +1,4 @@
-<!-- In base.html or your main layout file -->
+<!-- base.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,18 +8,17 @@
     <link rel="stylesheet" href="/static/css/header.css" />
     <link rel="stylesheet" href="/static/css/footer.css" />
     <link rel="stylesheet" href="/static/css/search.css" />
-    <!-- <link rel="stylesheet" href="/static/css/jobs.css" /> -->
-
-    <!-- other head content -->
     {% block head %}{% endblock %}
   </head>
   <body>
     {% include "header.html" %}
     <div><hr class="header-separator" /></div>
-    {% block content %}
-    <!-- This is where the content from other templates will be injected -->
-    {% endblock %} {% include "footer.html" %}
 
-    <!-- page content -->
+    {% block content %}{% endblock %} {% include "footer.html" %}
+
+    <!-- === Auto Refresh Token Script === -->
+    <script src="/static/js/auth.js"></script>
+
+    {% block scripts %}{% endblock %}
   </body>
 </html>

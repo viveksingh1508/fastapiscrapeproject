@@ -84,6 +84,7 @@ async def login(username: str, password: str, db: AsyncSession):
 async def logout(request: Request):
     response = RedirectResponse(url="/", status_code=302)
     response.delete_cookie("access_token")
+    response.delete_cookie("refresh_token")
     return response
 
 
@@ -126,7 +127,7 @@ async def refresh_token(refresh_token: str, db: AsyncSession):
         if payload.get("type") != "refresh":
             raise HTTPException(status_code=401, detail="Invalid token type")
 
-        user = await get_user(payload["user_id"], db)
+        user = await get_user(int(payload["user_id"]), db)
         if not user or not user.is_active:
             raise HTTPException(status_code=401, detail="User inactive")
 
