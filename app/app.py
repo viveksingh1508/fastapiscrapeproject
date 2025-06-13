@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 from fastapi.staticfiles import StaticFiles
 from app.routes import router as api_router
-from app.middleware.middleware import GetUserMiddleware
+from app.middleware.middleware import SessionMiddleware, LoadUserMiddleware
 
 
 load_dotenv()
@@ -26,7 +26,11 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(api_router)
-app.add_middleware(GetUserMiddleware)
+
+
+app.add_middleware(LoadUserMiddleware)
+app.add_middleware(SessionMiddleware)
+
 
 app.mount(
     "/static",

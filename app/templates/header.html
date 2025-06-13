@@ -5,7 +5,7 @@
 
   <div class="nav-right">
     {%if user %}
-    <span class="btn nav-btn-sign">Welcome, {{user.sub}}!</span>
+    <span class="btn nav-btn-sign">Welcome, {{user}}!</span>
     <span class="separator">|</span>
     <a href="/auth/logout" class="btn nav-btn">Logout</a>
     {% else %}
