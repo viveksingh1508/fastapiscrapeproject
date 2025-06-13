@@ -1,70 +1,129 @@
 .login-container {
-    max-width: 400px;
-    margin: 80px auto;
-    padding: 30px;
-    background-color: #fff;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    text-align: center;
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 30px;
+  background-color: #fff;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  text-align: center;
 }
 
 .login-form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* Ensures full width */
+  text-align: left; /* <-- ADD THIS */
+}
+
+.login-form label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+  margin-top: 12px;
 }
 
 .login-form input {
-    margin: 10px 0;
-    padding: 10px;
-    font-size: 16px;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
 }
 
 .login-form button {
-    padding: 10px;
-    font-size: 16px;
-    background-color: #3366cc;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 .login-form button:hover {
-    background-color: #254d99;
+  background-color: #007bff;
 }
 
 .error {
-    color: red;
-    margin-bottom: 10px;
+  color: red;
+  margin-bottom: 10px;
 }
 
 .signup-text {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 .toggle-password {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    user-select: none;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
+  color: #007bff;
 }
 
 .password-input-container {
-    position: relative;
-    width: 100%;
-    margin: 8px 0;
+  position: relative;
+  width: 100%;
+  margin: 8px 0;
 }
 
 .login-form input[type="text"],
 .login-form input[type="password"] {
-    width: 100%;
-    padding: 12px 40px 12px 12px;
-    /* Right padding for eye icon */
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 16px;
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  /* Right padding for eye icon */
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.btn-google {
+  position: relative; /* Needed for absolute centering */
+  width: 365px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: white;
+  color: #757575;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  box-shadow: 2px 2px 8px gray;
+  text-decoration: none;
+}
+
+.btn-google img {
+  height: 20px;
+  margin-right: 8px;
+  z-index: 1;
+}
+
+.btn-google-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  pointer-events: none; /* allows clicks to pass through */
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.divider hr {
+  flex: 1;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+.divider span {
+  margin: 0 12px;
+  color: #666;
+  font-size: 14px;
+  white-space: nowrap;
 }

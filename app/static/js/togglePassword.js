@@ -1,4 +1,7 @@
-function togglePassword(fieldId) {
+function togglePassword(fieldId, toggleElement) {
   const passwordField = document.getElementById(fieldId);
-  passwordField.type = passwordField.type === "password" ? "text" : "password";
+  const isHidden = passwordField.type === "password";
+
+  passwordField.type = isHidden ? "text" : "password";
+  toggleElement.textContent = isHidden ? "Hide" : "Show";
 }
