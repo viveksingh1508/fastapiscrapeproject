@@ -7,6 +7,27 @@ from sqlalchemy import or_
 from fastapi.responses import RedirectResponse
 from app.helper.redis import clear_session
 from app.helper.redis import SESSION_COOKIE_NAME
+from authlib.integrations.starlette_client import OAuth
+from starlette.config import Config
+import os
+
+config = Config(".env")
+
+oauth = OAuth(config)
+
+oauth.register(
+    name="google",
+    client_id=os.getenv("GOOGLE_CLIENT_ID"),
+    client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
+    # access_token_url="https://accounts.google.com/o/oauth2/token",
+    # access_token_params=None,
+    # authorize_url="https://accounts.google.com/o/oauth2/auth",
+    # authorize_params=None,
+    api_base_url="https://www.googleapis.com/oauth2/v1/",
+    client_kwargs={"scope": "openid email profile"},
+    server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
+    # issuer="https://accounts.google.com",
+)
 
 
 async def authenticate_user(username: str, password: str, db: AsyncSession):
@@ -46,6 +67,7 @@ async def logout(request: Request):
 
 async def get_current_user_from_session(request: Request, db: AsyncSession):
     session = request.state.session
+    print("userseresrewrer", session)
     user_id = session.get("user_id")
     if not user_id:
         raise HTTPException(status_code=401, detail="Not authenticated")

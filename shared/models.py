@@ -38,8 +38,9 @@ class User(Base):
     first_name = Column(String(50), nullable=False)
     last_name = Column(String(50), nullable=False)
     username = Column(String(50), unique=True, nullable=False)
-    email = Column(String(100), unique=True, nullable=False)
-    password = Column(String(200), nullable=False)
+    email = Column(String(100), unique=True, nullable=False, index=True)
+    password = Column(String(200), nullable=True)
+    google_id = Column(String(100), unique=True, nullable=True)
     is_active = Column(
         Boolean, default=True, server_default=sa.text("true"), nullable=False
     )
