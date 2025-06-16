@@ -13,3 +13,5 @@ ci.yml
 celerybeat-schedule.db
 dump.rdb
 
+/.env
+.env
