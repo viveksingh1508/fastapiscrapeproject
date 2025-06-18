@@ -1,0 +1,67 @@
+.job-details-top,
+.job-details-bottom {
+  background-color: white;
+  border: 1px solid #ccc;
+  margin: 20px auto 10px auto; /* center horizontally */
+  width: 90%; /* or less, like 80% */
+  padding: 10px;
+  text-align: justify;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.job-details h3 {
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+.job-details-top p {
+  margin: 10px 0;
+  margin-left: 15px;
+  color: #333; /* or use a valid color name or hex code */
+  font-family: "Arial", sans-serif; /* change font */
+}
+
+.job-details-bottom p {
+  margin: 10px 0;
+  margin-left: 15px;
+  color: #333; /* or use a valid color name or hex code */
+  font-family: "Arial", sans-serif; /* change font */
+}
+
+.job-details ul {
+  margin: 5px 0;
+}
+
+.job-details-box {
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  padding: 10px;
+  width: 80%;
+  margin: auto;
+  margin-top: 60px;
+  background-color: whitesmoke;
+}
+
+.title p {
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 15px;
+  color: #333;
+}
+
+.job-experience-salary {
+  position: relative;
+  margin-left: 15px;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.4;
+}
+
+.job-divider {
+  margin-top: 15px;
+}
+
+.posted-on {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}

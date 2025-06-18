@@ -1,45 +1,152 @@
-/* Align both nav sections */
+/* ───────────────────────────────
+   Header Layout
+─────────────────────────────── */
 .nav-left,
 .nav-right {
-    position: absolute;
-    top: 20px;
+  position: absolute;
+  top: 20px;
 }
 
 .nav-left {
-    left: 20px;
+  left: 100px;
+  top: 25px;
 }
 
 .nav-right {
-    right: 20px;
-    display: flex;
-    align-items: center;
+  right: 100px;
+  display: flex;
+  align-items: center;
 }
 
-/* Common button style (both <a> and <p>) */
+/* ───────────────────────────────
+   Branding / Logo
+─────────────────────────────── */
+.nav-btn-home {
+  font-size: 25px;
+  font-weight: bolder;
+  color: #275df5;
+  text-decoration: none;
+}
+
+/* ───────────────────────────────
+   Common Button Styles
+─────────────────────────────── */
 .nav-btn,
+.nav-btn-reg,
 .nav-btn-sign {
-    text-decoration: none;
-    color: #333;
-    margin-left: 20px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
+  text-decoration: none;
+  margin-left: 15px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
 }
 
-/* Sign in / welcome text style */
-.nav-btn-sign {
-    color: #007bff;
-    font-weight: bold;
+/* For Employers Button */
+.nav-btn {
+  color: black;
 }
 
-/* Hover only for <a>, not <p> */
-.nav-btn:hover,
+/* Hover underline effect only on text */
+.nav-btn:hover .nav-btn-text {
+  text-decoration: underline;
+  text-decoration-color: #f05537;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+}
+
+.nav-btn .arrow,
+.arrow {
+  font-size: 12px;
+  margin-left: 4px;
+  color: inherit;
+}
+
+/* ───────────────────────────────
+   Login Button
+─────────────────────────────── */
+.nav-btn-sign {
+  color: #275df5;
+  margin-top: -7px;
+  border: 1px solid #275df5;
+  border-radius: 25px;
+  box-sizing: border-box;
+  width: 82px;
+  height: 40px;
+  padding: 10px;
+  font-weight: 600;
+}
+
 .nav-btn-sign:hover {
-    text-decoration: underline;
+  background-color: #e2dddd;
+  transition: background-color 0.3s ease;
 }
 
-/* Vertical separator styling */
-.separator {
-    margin: 0 10px;
-    color: #888;
+/* ───────────────────────────────
+   Register Button
+─────────────────────────────── */
+.nav-btn-reg {
+  background: #f05537;
+  border: 1px solid #f05537;
+  color: #fff;
+  margin-top: -7px;
+  border-radius: 25px;
+  box-sizing: border-box;
+  width: 100px;
+  height: 40px;
+  padding: 10px;
+  font-weight: 600;
+}
+
+/* ───────────────────────────────
+   Dropdown Menu
+─────────────────────────────── */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: calc(100% + 18px);
+  left: 0;
+  min-width: 160px;
+  background-color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.dropdown:hover .dropdown-content,
+.dropdown:hover .hover-buffer {
+  display: block;
+}
+
+/* Dropdown Links */
+.dropdown-content a {
+  display: block;
+  padding: 10px 16px;
+  background-color: white;
+  color: #000 !important;
+  text-decoration: none;
+  font-size: 14px;
+  font-family: sans-serif;
+  border-radius: 0;
+  margin: 0;
+  outline: none;
+  text-shadow: none;
+}
+
+.dropdown-content a:hover {
+  background-color: #f2f2f2;
+}
+
+/* Invisible bridge to fix hover gap */
+.hover-buffer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 20px;
 }

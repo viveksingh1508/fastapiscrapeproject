@@ -1,65 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Job Details</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
-      }
-      .job {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-      }
-      .job h3 {
-        margin: 0 0 5px;
-      }
-      .job p {
-        margin: 5px 0;
-      }
-    </style>
-  </head>
-  <body>
-    <h1 style="text-align: center">{{ job.title }} at {{ job.company }}</h1>
-    <div class="job" style="width: 70%; margin: 0 auto">
-      <p><strong>Company:</strong> {{ job.company }}</p>
-      <p><strong>Type:</strong> {{ job.job_type }}</p>
-      <p><strong>Title:</strong> {{ job.job_title }}</p>
-      <p><strong>Education:</strong> {{ job.qualifications }}</p>
-      <p><strong>Experience:</strong> {{ job.experience }}</p>
-      <p><strong>Role:</strong> {{ job.role }}</p>
-      <p><strong>Location:</strong> {{ job.location }}</p>
-      <p><strong>Salary Range:</strong> {{ job.salary_range }}</p>
-      <p><strong>Preference:</strong> {{ job.preferences }}</p>
-      <p><strong>Skills:</strong> {{ job.skills }}</p>
-      <p><strong>Responsibilities:</strong> {{ job.responsibilities }}</p>
-      <p><strong>Benefits:</strong></p>
-      <ul>
-        {% for benefit in benefits %}
-        <li>{{ benefit }}</li>
-        {% endfor %}
-      </ul>
-      <p><strong>Description:</strong> {{ job.job_description }}</p>
-      {% if company_profile %}
-      <h3>Company Profile</h3>
-      <ul>
-        {% for key, value in company_profile.items() %}
-        <li><strong>{{ key }}:</strong> {{ value }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %}
+{% extends "base.html" %} {% block head %}
+<link rel="stylesheet" href="/static/css/job_details.css" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+{% endblock %} {% block content %}
 
+<!-- <h1 style="text-align: center">{{ job.title }} at {{ job.company }}</h1> -->
+<div class="job-details-box">
+  <div class="job-details-top">
+    <div class="title"><p>{{ job.job_title }}</p></div>
+
+    <p>{{ job.company }}</p>
+    <div class="job-experience-salary">
+      <span>
+        <i
+          class="fa fa-briefcase"
+          style="font-size: 18px; color: rgb(13, 13, 13)"
+        ></i>
+        {{ job.experience }}
+      </span>
+      <span class="separator">|</span>
+      <span>
+        <i
+          class="fa fa-money"
+          style="font-size: 18px; color: rgb(13, 13, 13)"
+        ></i>
+        {{ job.salary_range }}
+      </span>
+    </div>
+
+    <p>
+      <i
+        class="fa fa-map-marker"
+        style="font-size: 18px; color: rgb(13, 13, 13)"
+      ></i>
+      {{ job.location }}
+    </p>
+
+    <div class="job-divider">
+      <hr />
+    </div>
+    <div class="posted-on">
       <p>
-        <strong>Posted on:</strong>
+        Posted on:
         <span data-posted-at="{{job.posted_at}}"></span>
       </p>
     </div>
-    <div style="text-align: center"><a href="/">Home</a></div>
-  </body>
-</html>
+  </div>
+  <div class="job-details-bottom">
+    <div class="title"><p>Job Description</p></div>
+    <p><strong>Role & Responsibilities</strong></p>
+    <p>{{ job.role }}</p>
+    <p>{{ job.responsibilities }}</p>
+    <p><strong>Skills/Qualifications:</strong></p>
+    <p>{{ job.skills }}</p>
+    <p><strong>Role:</strong> {{ job.role }}</p>
+
+    <p><strong>Employment Type:</strong> {{ job.job_type }}</p>
+    <p><strong>Education:</strong> {{ job.qualifications }}</p>
+    <p><strong>Preference:</strong> {{ job.preferences }}</p>
+    <p><strong>Benefits:</strong></p>
+    <ul>
+      {% for benefit in benefits %}
+      <li>{{ benefit }}</li>
+      {% endfor %}
+    </ul>
+    {% if company_profile %}
+    <h3>Company Profile</h3>
+    <ul>
+      {% for key, value in company_profile.items() %}
+      <li><strong>{{ key }}:</strong> {{ value }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</div>
+<div style="text-align: center; padding-top: 20px"><a href="/">Home</a></div>
 
 <script src="/static/js/jobUploadTime.js"></script>
+{% endblock %}
