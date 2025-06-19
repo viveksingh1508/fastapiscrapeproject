@@ -108,7 +108,7 @@
 .dropdown-content {
   display: none;
   position: absolute;
-  top: calc(100% + 18px);
+  top: calc(100% + 19px);
   left: 0;
   min-width: 160px;
   background-color: white;
@@ -116,6 +116,7 @@
   border-radius: 6px;
   overflow: hidden;
   z-index: 1000;
+  border-radius: 20px;
 }
 
 .dropdown:hover .dropdown-content,
