@@ -5,9 +5,17 @@
 
   <div class="nav-right">
     {%if user %}
-    <span class="btn nav-btn-sign">Welcome, {{user}}!</span>
-    <span class="separator">|</span>
-    <a href="/auth/logout" class="btn nav-btn">Logout</a>
+    <div class="profile-container">
+      <button id="profileBtn" class="profile-btn">
+        <span class="menu-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        <img src="{{'/static/images/profile.jpeg'}}" alt="Profile" />
+      </button>
+    </div>
+
     {% else %}
     <a href="/auth/login" class="btn nav-btn-sign">Login</a>
     <a href="/auth/register" class="btn nav-btn-reg">Register</a>
@@ -28,3 +36,36 @@
     {% endif %}
   </div>
 </header>
+
+{% if user %}
+<div id="profileDrawer" class="profile-drawer">
+  <button id="closeDrawer" class="close-btn">✖</button>
+  <div class="profile-content">
+    <img
+      src="{{ '/static/images/profile.jpeg' }}"
+      alt="User Pic"
+      class="drawer-avatar"
+    />
+    <h2>{{ user }}</h2>
+    <a href="/auth/logout" class="btn logout-btn">Logout</a>
+  </div>
+</div>
+{% endif %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const profileBtn = document.getElementById("profileBtn");
+    const drawer = document.getElementById("profileDrawer");
+    const closeDrawer = document.getElementById("closeDrawer");
+
+    if (profileBtn && drawer && closeDrawer) {
+      profileBtn.addEventListener("click", () => {
+        drawer.classList.add("open");
+      });
+
+      closeDrawer.addEventListener("click", () => {
+        drawer.classList.remove("open");
+      });
+    }
+  });
+</script>

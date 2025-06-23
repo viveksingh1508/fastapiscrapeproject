@@ -151,3 +151,104 @@
   width: 100%;
   height: 20px;
 }
+
+/* Avatar button */
+.profile-container {
+  margin-left: 15px;
+}
+
+.profile-btn {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 4px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  width: 95px;
+  gap: 30px;
+}
+
+.profile-btn img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-btn:hover {
+  background-color: #f9f9f9;
+}
+
+/* Horizontal menu icon (3 lines) */
+.menu-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+}
+
+.menu-icon span {
+  display: block;
+  width: 14px;
+  height: 2px;
+  background-color: #333;
+  border-radius: 1px;
+}
+
+/* Sliding Drawer */
+.profile-drawer {
+  position: fixed;
+  top: 0;
+  right: -300px; /* Start hidden off the right */
+  width: 250px;
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 2000;
+  transition: right 0.3s ease;
+  padding: 20px;
+  box-sizing: border-box;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+.profile-drawer.open {
+  right: 0; /* Slide in from the right */
+}
+
+.drawer-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.profile-content h2 {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.logout-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 12px;
+  background-color: #f05537;
+  color: white;
+  text-decoration: none;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  float: right;
+}
