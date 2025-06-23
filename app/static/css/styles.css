@@ -7,21 +7,9 @@ body {
 }
 
 .main-header {
-  background-color: whitesmoke;
-  color: white;
-  padding: 20px;
+  background-color: #edeaea;
+  padding: 30px;
   position: relative;
-}
-
-hr.header-separator {
-  border: none;
-  border-top: 1px solid #333;
-  margin: 0;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 25px;
 }
 
 .btn-primary {

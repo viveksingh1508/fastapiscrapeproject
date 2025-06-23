@@ -11,10 +11,8 @@
     {% block head %}{% endblock %}
   </head>
   <body>
-    {% include "header.html" %}
-    <div><hr class="header-separator" /></div>
-
-    {% block content %}{% endblock %} {% include "footer.html" %}
+    {% include "header.html" %} {% block content %}{% endblock %} {% include
+    "footer.html" %}
 
     <!-- === Auto Refresh Token Script === -->
     <!-- <script src="/static/js/auth.js"></script> -->
