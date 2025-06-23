@@ -1,60 +1,73 @@
 {% extends "base.html" %} {% block head %}
 <link rel="stylesheet" href="/static/css/login.css" />
 {% endblock %} {% block content %}
-<div class="login-container">
-  <h2>Login to JobAiro</h2>
-  {% if error %}
-  <p class="error">{{ error }}</p>
-  {% endif %}
-  <form action="/auth/login" method="post" class="login-form">
-    <div class="form-group">
-      <label for="username">Email ID / Username</label>
-      <input
-        type="text"
-        name="username"
-        id="username"
-        value="{{ username or '' }}"
-        placeholder="Username or Email"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <div class="password-input-container">
+
+<div class="login">
+  <div class="msg-container">
+    <h2>New to JobAiro?</h2>
+    <p>One click apply using JobAiro profile.</p>
+    <p>Get relevant job recommendations.</p>
+    <p>Showcase profile to top companies and consultants.</p>
+    <p>Know application status on applied jobs.</p>
+    <a href="/auth/register" class="btn nav-btn-register">Register for Free</a>
+  </div>
+
+  <div class="login-container">
+    <h2>Login to JobAiro</h2>
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
+    <form action="/auth/login" method="post" class="login-form">
+      <div class="form-group">
+        <label for="username">Email ID / Username</label>
         <input
-          type="password"
-          name="password"
-          id="password"
-          placeholder="Password"
+          type="text"
+          name="username"
+          id="username"
+          value="{{ username or '' }}"
+          placeholder="Username or Email"
           required
         />
-        <span
-          class="toggle-password"
-          onclick="togglePassword('password', this)"
-        >
-          Show
-        </span>
       </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-input-container">
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+          <span
+            class="toggle-password"
+            onclick="togglePassword('password', this)"
+          >
+            Show
+          </span>
+        </div>
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+    <p class="signup-text">
+      Don’t have an account? <a href="/user/register">Sign up</a>
+    </p>
+
+    <div class="divider">
+      <hr />
+      <span>or</span>
+      <hr />
     </div>
 
-    <button type="submit">Login</button>
-  </form>
-  <p class="signup-text">
-    Don’t have an account? <a href="/user/register">Sign up</a>
-  </p>
-
-  <div class="divider">
-    <hr />
-    <span>or</span>
-    <hr />
-  </div>
-
-  <div class="oauth-providers">
-    <a href="/auth/google/login" class="btn-google">
-      <img src="/static/images/google.png" alt="Google" />
-      <span class="btn-google-text">Sign in with Google</span>
-    </a>
+    <div class="oauth-providers">
+      <a href="/auth/google/login" class="btn-google">
+        <img src="/static/images/google.png" alt="Google" />
+        <span class="btn-google-text">Sign in with Google</span>
+      </a>
+    </div>
   </div>
 </div>
+
 <script src="/static/js/togglePassword.js"></script>
 {% endblock %}
